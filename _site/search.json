@@ -4,13 +4,90 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "About this site\n\n\nPress to toggle code\n1 + 1\n\n\n[1] 2"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "",
+    "text": "This is a hands-on exercise following this guide as a requirement under the class ISSS608: Visual Analytics and Applications.\n\n\n\nImage taken from Intro R Workshop (ajsmit)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#installing-and-loading-required-packages",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#installing-and-loading-required-packages",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Installing and Loading Required Packages",
+    "text": "Installing and Loading Required Packages\nThe function p_load() from pacman checks if inputted packages are already installed. If they are, they are loaded into the R environment. Otherwise, they are installed then loaded in. The code chunk below runs p_load() for tidyverse.\n\n\nPress to toggle code\npacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#importing-the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#importing-the-data",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Importing the Data",
+    "text": "Importing the Data\nThe code chunk below uses read.csv() to load in the CSV file “Exam_data.csv” into the R environment.\n\n\nPress to toggle code\nexam_data <- read.csv('data/Exam_data.csv')\n\n\n\nExamining the data"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#base-r-graphics-vs.-ggplot2",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#base-r-graphics-vs.-ggplot2",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Base R Graphics vs. ggplot2",
+    "text": "Base R Graphics vs. ggplot2\n\n\nPress to toggle code\nhist(exam_data$MATHS, col ='#e3879e')\n\n\n\n\n\n\n\n\n\n\n\nPress to toggle code\nggplot(data=exam_data, aes(x = MATHS)) +\n  geom_histogram(bins=10, \n                 boundary = 100,\n                 color=\"black\", \n                 fill=\"#e3879e\") +\n  ggtitle(\"Distribution of Maths scores\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#exploring-geometric-objects",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#exploring-geometric-objects",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Exploring Geometric Objects",
+    "text": "Exploring Geometric Objects\nGeometric objects refer to the actual marks placed on the plot. A plot must contain at least one geometric object in order to have an output. There’s no limit on the number of geometric objects, all you need to do is add them to the plot using +. The image below contains samples of geometric objects and their visualizations.\n\n\n\n\n\n\nBar Plot - geom_bar()\nThe code chunk below uses the geometric object geom_bar() which produces a bar plot of the frequencies of the variable ‘RACE’ as specified by aes(x = RACE).\n\n\nPress to toggle code\nggplot(data = exam_data,\n       aes(x = RACE)) +\n  geom_bar(fill = '#e3879e')\n\n\n\n\n\n\n\n\n\n\n\nDot Plot - geom_dotplot()\nThe code chunk below makes use of the geometric object geom_dotplot() which produces a dot plot of the variable ‘MATHS’, which refers to math scores.\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot(binwidth = 2.5,         \n               dotsize = 0.5,\n               fill = '#e3879e') +      \n  scale_y_continuous(NULL,           \n                     breaks = NULL)  \n\n\n\n\n\n\n\n\n\nAs you can see geom_dotplot() makes use of two arguments, ‘binwidth’ which refers to group ranges and ‘dotsize’ which scales the size of the dots. The function scale_y_continuous() is also added to turn off the y-axis by setting to NULL.\n\n\nHistogram - geom_histogram()\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20,            \n                 color=\"black\",      \n                 fill=\"#e3879e\")  \n\n\n\n\n\n\n\n\n\n\nModifying a geometric object by changing ’aes()’\n\n\nPress to toggle code\nggplot(data=exam_data, \n       aes(x = MATHS, \n           fill = GENDER)) +\n  geom_histogram(bins = 20, \n                 color = \"grey30\") +\n  scale_fill_manual(values = c(\"#e3879e\",\"#af7cb6\"))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n💡ADDITIONAL NOTES\n\n\n\nYou can set specific fill colors using scale_fill_manual(). Just input your vector of colors in the ‘values’ argument.\n\n\n\n\n\nKernel Density Estimation - geom_density()\n\n\nPress to toggle code\nggplot(data=exam_data, \n       aes(x = MATHS, \n           colour = GENDER)) +\n  geom_density()\n\n\n\n\n\n\n\n\n\n\n\nBox Plot - geom_boxplot()\n\n\nPress to toggle code\nggplot(data=exam_data, \n       aes(y = MATHS, \n           x= GENDER)) +\n  geom_boxplot(notch=TRUE)\n\n\n\n\n\n\n\n\n\n\nCombining geometric objects\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, \n           x = GENDER)) +\n  geom_boxplot() +              #<<      \n  geom_point(position=\"jitter\", #<<\n             size = 0.5)        #<<\n\n\n\n\n\n\n\n\n\n\n\nWorking with stat_summary()\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, x= GENDER)) +\n  geom_boxplot() +\n  stat_summary(geom = \"point\",       \n               fun.y = \"mean\",         \n               colour = \"red\",        \n               size=4)               \n\n\nWarning: `fun.y` is deprecated. Use `fun` instead.\n\n\n\n\n\n\n\n\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, x =  GENDER)) +\n  geom_boxplot() +\n  geom_point(stat = \"summary\",        \n             fun.y =\"mean\",           \n             colour =\"red\",          \n             size=4)          \n\n\nWarning: Ignoring unknown parameters: fun.y\n\n\nNo summary function supplied, defaulting to `mean_se()`\n\n\n\n\n\n\n\n\nScatter Plot - geom_point()\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS, \n           y = ENGLISH)) +\n  geom_point()            \n\n\n\n\n\n\n\n\n\n\nGetting the best fit curve on a scatter plot\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS, y = ENGLISH)) +\n  geom_point() +\n  geom_smooth(method = lm,\n              size = 0.5)\n\n\n`geom_smooth()` using formula 'y ~ x'"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-facets",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-facets",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Working with Facets",
+    "text": "Working with Facets\nFacetting generates small multiples (sometimes also called trellis plot), each displaying a different subset of the data.\nFacets are an alternative to aesthetics for displaying additional discrete variables."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#using-facet-wrap",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#using-facet-wrap",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Using facet-wrap()",
+    "text": "Using facet-wrap()\nThe code chunk below produces a 2D matrix of ‘MATHS’ histograms as grouped by variable ‘CLASS’ using facet_wrap(~ CLASS) .\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20) +\n    facet_wrap(~ CLASS)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n💻 CODE REVIEW!\n\n\n\nThe function facet_wrap() takes in the argument ‘facets’ which pertains to the facet groups. The documentation states that it can accept either formulas or character vectors.\nThe operator ~ is used to define the relationship between dependent variable and independent variables in a formula; it separates the lefthand side and righthand side. The argument ‘facets’ accepts formulas, and by using the code snippet ~ CLASS we are defining a one-sided formula."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#using-facet_grid",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#using-facet_grid",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Using facet_grid()",
+    "text": "Using facet_grid()\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20) +\n    facet_grid(~ CLASS)\n\n\n\n\n\n\n\n\n\n\nHow do we create a trellis box plot of math scores per class grouped by gender?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, \n           x = CLASS)) +\n  geom_boxplot() + \n  facet_wrap(~ GENDER)\n\n\n\n\n\n\n\n\n\n\nHow do we put one panel on top of the other?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, \n           x = CLASS)) +\n  geom_boxplot() + \n  facet_wrap(~ GENDER, nrow = 2, strip.position = \"right\")\n\n\n\n\n\n\n\n\n\nThe argument ‘strip.position’ sets the position of the facet group’s strip label.\n\nHow do we group by both ‘CLASS’ and ‘GENDER’?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(y = MATHS, \n           x = GENDER)) +\n  geom_boxplot() + \n  facet_grid(GENDER ~ CLASS)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-coordinates",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-coordinates",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Working with Coordinates",
+    "text": "Working with Coordinates"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-themes",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#working-with-themes",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Working with Themes",
+    "text": "Working with Themes\n\nHow do you create a horizontal bar graph with a light blue background?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = RACE)) +\n  geom_bar() +\n  coord_flip() +\n  theme_minimal() +\n   theme(panel.background = element_rect(fill = \"lightblue\",\n                                         color = \"white\"))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#designing-data-drive-graphics-for-analysis",
+    "href": "Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.html#designing-data-drive-graphics-for-analysis",
+    "title": "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2",
+    "section": "Designing Data-drive Graphics for Analysis",
+    "text": "Designing Data-drive Graphics for Analysis\n\nHow do you improve a normal bar chart?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = RACE)) +\n  geom_bar() \n\n\n\n\n\n\n\n\n\n\nHow do we add mean and median lines on the histogram plot and change fill colors?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_histogram(bins = 20,            \n                 color = \"black\",      \n                 fill = \"lightblue\") +\n  geom_vline(aes(xintercept = mean(MATHS)),\n             col = 'red',\n             size = 0.5,\n             linetype = \"dashed\")+ \n  geom_vline(aes(xintercept = median(MATHS)),\n             col = 'black',\n             size = 0.5,\n             linetype = \"dashed\")\n\n\n\n\n\n\n\n\n\n\nHow do you have a histogram show the distribution of English scores for all pupils in the background?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = ENGLISH,\n           fill = GENDER)) +\n  geom_histogram(bins = 20,\n                 color = \"black\") + \n  facet_wrap(~ GENDER)\n\n\n\n\n\n\n\n\n\n\nHow to create a scatter plot with reference lines?\n\n\n\nPress to toggle code\nggplot(data = exam_data, \n       aes(x = MATHS, \n           y = ENGLISH)) +\n  geom_point() + \n  geom_vline(aes(xintercept = 50),\n             col = 'grey',\n             size = 0.8,\n             linetype = \"dashed\") + \n  geom_hline(aes(yintercept = 50),\n             col = 'grey',\n             size = 0.8,\n             linetype = \"dashed\")"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ISSS608-VAA",
+    "title": "ISSS608: Visual Analytics and Applications",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "Welcome to my journey in ISSS608: Visual Analytics and Applications."
   }
 ]

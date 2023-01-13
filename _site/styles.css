@@ -1,1 +1,147 @@
-/* css styles */
+:root {
+  --primary: #e3879e; /* pink */
+  --secondary: #cb6a82; /* darker pink*/
+  --contrast: #704276; /* dark purple */
+  --contrast2: #af7cb6; /* purple*/
+  --contrast3: #e7d8e9; /* light purple */
+  --innerbg: #F3DDE3;
+  --text: #2E1A1F;
+}
+
+.navbar{
+  background-color: var(--primary);
+}
+
+a:hover{
+  background-color: var(--primary);
+}
+
+.quarto-title{
+  color: var(--secondary);
+}
+
+#toc-title{
+  color: var(--secondary);
+}
+
+.active{
+    border-left: 1px solid var(--primary);
+    color: var(--primary) !important;
+}
+
+h1.level1{
+  color: var(--primary);
+}
+
+blockquote{
+  border-left: .3rem solid var(--secondary);
+}
+
+.blockquote{
+  color: var(--secondary);
+}
+
+.callout{
+  background-color: var(--contrast3);
+}
+
+div.callout-important.callout {
+    border-left-color: var(--contrast);
+}
+
+div.callout-important.callout-style-default>.callout-header{
+  background-color: var(--contrast2);
+}
+
+div.callout-note.callout {
+    border-left-color: var(--contrast);
+}
+
+div.callout-note.callout-style-default>.callout-header{
+  background-color: var(--contrast2);
+}
+
+div.callout-caution.callout {
+    border-left-color: var(--contrast);
+}
+
+div.callout-caution.callout-style-default>.callout-header{
+  background-color: var(--contrast2);
+}
+
+div.callout-tip.callout {
+    border-left-color: var(--contrast);
+}
+
+div.callout-tip.callout-style-default>.callout-header{
+  background-color: var(--contrast2);
+}
+
+div.callout-warning.callout {
+    border-left-color: var(--contrast);
+}
+
+div.callout-warning.callout-style-default>.callout-header{
+  background-color: var(--contrast2);
+}
+
+.callout-caption-container{
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.callout-header{
+  color: var(--contrast);
+}
+
+.sourceCode{
+  background-color: var(--innerbg);
+}
+
+div.sourceCode{
+  border: 4px solid var(--primary);
+  background-color: var(--innerbg);
+  margin-top: 0em;
+  border-radius: 0em;
+}
+
+.cell-output{
+  background-color: var(--primary);
+  border-radius: .25rem;
+}
+
+details>summary{
+  background-color: var(--primary);
+  color: var(--innerbg);
+}
+
+img{
+  border: 4px solid var(--contrast2)
+}
+
+
+code{
+  color: var(--contrast2);
+  border-radius: .25rem;
+}
+
+a{
+  color: var(--contrast2);
+}
+
+p {
+  font-size: 1.1em;
+}
+
+tr:nth-child(even) {
+  background-color: #e3879e;
+}
+
+tr.header{
+  background-color: #e3879e;
+}
+
+th, td {
+  font-size: 0.8em;
+  vertical-align: middle;
+}

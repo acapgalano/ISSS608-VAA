@@ -1,0 +1,358 @@
+---
+title: "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2"
+author: "Anica Clarice Antonella P. Galano"
+---
+
+# Overview
+
+This is a hands-on exercise following this [guide](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/essential-grammatical-elements-in-ggplot2-3) as a requirement under the class ISSS608: Visual Analytics and Applications.
+
+![Image taken from [Intro R Workshop (ajsmit)](https://ajsmit.github.io/Intro_R_Official/tidy.html "Intro R Workshop (Chapter 11 - Tidy data)")](images/image-518250636.png){fig-align="center" width="821"}
+
+# Getting Started
+
+## Installing and Loading Required Packages
+
+The function `p_load()` from **`pacman`** checks if inputted packages are already installed. If they are, they are loaded into the R environment. Otherwise, they are installed then loaded in. The code chunk below runs `p_load()` for **`tidyverse`**.
+
+```{r}
+pacman::p_load(tidyverse)
+```
+
+## Importing the Data
+
+The code chunk below uses `read.csv()` to load in the CSV file "*Exam_data.csv*" into the R environment.
+
+```{r}
+exam_data <- read.csv('data/Exam_data.csv')
+```
+
+### Examining the data
+
+# Exploring `ggplot2`
+
+## Base R Graphics vs. `ggplot2`
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+hist(exam_data$MATHS, col ='#e3879e')
+```
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data=exam_data, aes(x = MATHS)) +
+  geom_histogram(bins=10, 
+                 boundary = 100,
+                 color="black", 
+                 fill="#e3879e") +
+  ggtitle("Distribution of Maths scores")
+```
+
+## Exploring Geometric Objects
+
+**Geometric objects** refer to the actual marks placed on the plot. A plot must contain **at least one geometric object** in order to have an output. There's no limit on the number of geometric objects, all you need to do is add them to the plot using `+`. The image below contains samples of geometric objects and their visualizations.
+
+![](images/image-480292859.png){fig-align="center" width="568"}
+
+### Bar Plot - `geom_bar()`
+
+The code chunk below uses the geometric object `geom_bar()` which produces a bar plot of the frequencies of the variable '*RACE*' as specified by `aes(x = RACE)`.
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar(fill = '#e3879e')
+```
+
+### Dot Plot - `geom_dotplot()`
+
+The code chunk below makes use of the geometric object `geom_dotplot()` which produces a dot plot of the variable '*MATHS*', which refers to math scores.
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot(binwidth = 2.5,         
+               dotsize = 0.5,
+               fill = '#e3879e') +      
+  scale_y_continuous(NULL,           
+                     breaks = NULL)  
+```
+
+As you can see `geom_dotplot()` makes use of two arguments, 'binwidth' which refers to group ranges and 'dotsize' which scales the size of the dots. The function `scale_y_continuous()` is also added to turn off the y-axis by setting to NULL.
+
+### Histogram - `geom_histogram()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,            
+                 color="black",      
+                 fill="#e3879e")  
+```
+
+#### Modifying a geometric object by changing '*aes()'*
+
+```{r}
+#| fig-align: center
+#| fig-width: 8
+ggplot(data=exam_data, 
+       aes(x = MATHS, 
+           fill = GENDER)) +
+  geom_histogram(bins = 20, 
+                 color = "grey30") +
+  scale_fill_manual(values = c("#e3879e","#af7cb6"))
+```
+
+::: {.callout-note icon="false"}
+## 💡ADDITIONAL NOTES
+
+You can set specific fill colors using `scale_fill_manual()`. Just input your vector of colors in the 'values' argument.
+:::
+
+### Kernel Density Estimation - `geom_density()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data=exam_data, 
+       aes(x = MATHS, 
+           colour = GENDER)) +
+  geom_density()
+```
+
+### Box Plot - `geom_boxplot()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_boxplot(notch=TRUE)
+```
+
+#### Combining geometric objects
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data, 
+       aes(y = MATHS, 
+           x = GENDER)) +
+  geom_boxplot() +              #<<      
+  geom_point(position="jitter", #<<
+             size = 0.5)        #<<
+```
+
+#### Working with `stat_summary()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data, 
+       aes(y = MATHS, x= GENDER)) +
+  geom_boxplot() +
+  stat_summary(geom = "point",       
+               fun.y = "mean",         
+               colour = "red",        
+               size=4)               
+```
+
+```{r}
+ggplot(data = exam_data, 
+       aes(y = MATHS, x =  GENDER)) +
+  geom_boxplot() +
+  geom_point(stat = "summary",        
+             fun.y ="mean",           
+             colour ="red",          
+             size=4)          
+```
+
+### Scatter Plot - `geom_point()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS, 
+           y = ENGLISH)) +
+  geom_point()            
+```
+
+#### Getting the best fit curve on a scatter plot
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS, y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5)
+```
+
+## Working with Facets
+
+Facetting generates small multiples (sometimes also called trellis plot), each displaying a different subset of the data.
+
+Facets are an alternative to aesthetics for displaying additional discrete variables.
+
+## Using `facet-wrap()`
+
+The code chunk below produces a 2D matrix of *'MATHS'* histograms as grouped by variable '*CLASS*' using `facet_wrap(~ CLASS)` .
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20) +
+    facet_wrap(~ CLASS)
+```
+
+::: {.callout-note icon="false"}
+## 💻 CODE REVIEW!
+
+The function `facet_wrap()` takes in the argument 'facets' which pertains to the facet groups. The [documentation](https://www.rdocumentation.org/packages/ggplot2/versions/3.4.0/topics/facet_wrap "ggplot2 - facet_wrap") states that it can accept either formulas or character vectors.
+
+The operator `~` is used to define the relationship between dependent variable and independent variables in a **formula**; it separates the lefthand side and righthand side. The argument 'facets' accepts formulas, and by using the code snippet `~ CLASS` we are defining a one-sided formula.
+:::
+
+## Using `facet_grid()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20) +
+    facet_grid(~ CLASS)
+```
+
+> How do we create a trellis box plot of math scores per class grouped by gender?
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+ggplot(data = exam_data, 
+       aes(y = MATHS, 
+           x = CLASS)) +
+  geom_boxplot() + 
+  facet_wrap(~ GENDER)
+```
+
+> How do we put one panel on top of the other?
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+ggplot(data = exam_data, 
+       aes(y = MATHS, 
+           x = CLASS)) +
+  geom_boxplot() + 
+  facet_wrap(~ GENDER, nrow = 2, strip.position = "right")
+```
+
+The argument 'strip.position' sets the position of the facet group's strip label.
+
+> How do we group by both '*CLASS*' and '*GENDER*'?
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+ggplot(data = exam_data, 
+       aes(y = MATHS, 
+           x = GENDER)) +
+  geom_boxplot() + 
+  facet_grid(GENDER ~ CLASS)
+```
+
+## Working with Coordinates
+
+## Working with Themes
+
+> How do you create a horizontal bar graph with a light blue background?
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data, 
+       aes(x = RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_minimal() +
+   theme(panel.background = element_rect(fill = "lightblue",
+                                         color = "white"))
+```
+
+## Designing Data-drive Graphics for Analysis
+
+> How do you improve a normal bar chart?
+
+```{r}
+#| fig-align: center
+#| fig-width: 6
+ggplot(data = exam_data, 
+       aes(x = RACE)) +
+  geom_bar() 
+```
+
+> How do we add mean and median lines on the histogram plot and change fill colors?
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,            
+                 color = "black",      
+                 fill = "lightblue") +
+  geom_vline(aes(xintercept = mean(MATHS)),
+             col = 'red',
+             size = 0.5,
+             linetype = "dashed")+ 
+  geom_vline(aes(xintercept = median(MATHS)),
+             col = 'black',
+             size = 0.5,
+             linetype = "dashed")
+```
+
+> How do you have a histogram show the distribution of English scores for all pupils in the background?
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = ENGLISH,
+           fill = GENDER)) +
+  geom_histogram(bins = 20,
+                 color = "black") + 
+  facet_wrap(~ GENDER)
+```
+
+> How to create a scatter plot with reference lines?
+
+```{r}
+#| fig-align: center
+#| fig-width: 7
+ggplot(data = exam_data, 
+       aes(x = MATHS, 
+           y = ENGLISH)) +
+  geom_point() + 
+  geom_vline(aes(xintercept = 50),
+             col = 'grey',
+             size = 0.8,
+             linetype = "dashed") + 
+  geom_hline(aes(yintercept = 50),
+             col = 'grey',
+             size = 0.8,
+             linetype = "dashed")
+```

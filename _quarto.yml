@@ -4,16 +4,28 @@ project:
 website:
   title: "ISSS608-VAA"
   navbar:
-    left:
+    left: 
+    - text: "Hands-on Exercises"
+      menu:
+        - text: "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2"
+          href: Hands-on_Ex/Hands-on_Ex1/Hands-on_Ex1.qmd
+    right:
       - href: index.qmd
         text: Home
       - about.qmd
 
 format:
   html:
-    theme: cosmo
+    backgroundcolor: '#fec0ce'
+    theme: pulse
     css: styles.css
     toc: true
-
+    code-fold: show
+    code-overflow: wrap
+    code-tools:
+      source: true
+      toggle: true
+      caption: none
+    code-summary: "Press to toggle code"
 editor: visual
 
