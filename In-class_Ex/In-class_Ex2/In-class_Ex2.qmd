@@ -1,0 +1,35 @@
+---
+title: "In-class Exercise 2: Creating Eelegant Graphics with ggplot2"
+---
+
+# Overview
+
+This document serves as my In-class Exercise 2 requirement, following the second week of ISSS608 VAA lecture of Professor Kam on January 21, 2023.
+
+## Tidyverse
+
+`Tidyverse` is a collection of packages that (as named) is used to **tidy data** in the field of data analytics. The `tidyverse` workflow is shown below.
+
+[![Figure taken from [Hands-on Exercise 1 slides of ISSS608 course page](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)](images/image-244973283.png){fig-align="center" width="818"}](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)
+
+In this In-class Exercise, we make use of tidyverse, especially the included package `ggplot2` to explore the different graphics that can be designed and how they can be customized.
+
+## The Scenario
+
+# Getting Started
+
+## Loading the required packages
+
+The function `p_load()` from **`pacman`** checks if inputted packages are already installed. If they are, they are loaded into the R environment. Otherwise, they are installed then loaded in. The code chunk below runs `p_load()` for **`tidyverse`**.
+
+```{r}
+pacman::p_load(tidyverse)
+```
+
+## Importing the data
+
+```{r}
+
+```
+
+## 
