@@ -1,0 +1,161 @@
+---
+title: "Take-home Exercise 1 - Age-Sex Pyramid"
+---
+
+# Overview
+
+This document serves as a submission for Take-home Exercise 1 as required by the course ISSS608 Visual Analytics and Applications.
+
+## Objective
+
+How do we analyze population trends? One common graphical representation is the age-sex pyramid, also known as the population pyramid. It reveals the past and present of one's population, and gives an idea of the mortality and fertility rates of a country. In this exercise, we use Tableau to create age-sex pyramids of nine planning areas of Singapore in a single view using a trellis chart.
+
+## The Data
+
+For this exercise, we used the "***Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022"*** dataset available from the [Department of Statistics, Singapore](https://www.singstat.gov.sg/).
+
+![Screenshot of the dataset source from [SingStat](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data "SingStat - Geographic Distribution")](images/image-70952309.png){fig-align="center" width="800"}
+
+The dataset consists of the following data:
+
+-   Planning Area (PA)
+
+-   Subzone (SZ)
+
+-   Age Group (AG)
+
+-   Sex
+
+-   Type of Dwelling (TOD)
+
+-   Population (Pop)
+
+# Visualization Process
+
+After opening *respopagesextod2022.csv,* we get the following preview:
+
+![](images/image-724631216.png)
+
+## Setting up the trellis chart
+
+Following the guide by Luke Stanke called "[Trellis Chart in Tableau](https://www.phdata.io/blog/trellis-chart/ "phData - Trellis Chart in Tableau")", we can setup our trellis through the following steps.
+
+1.  Select *Create Calculated field* from the **Data** pane. Create a *calculated field* called `Index` and type `INDEX()` as the calculation.
+
+2.  Create a *parameter* called `Total Columns` and set it as **3**.
+
+    ![](images/image-1675166471.png){fig-align="center" width="304"}
+
+3.  Create another *calculated field* called `Column` and set it as `([Index] - 1) % [Total Columns]` . Similarly, create a *calculated field* called `Row` and set it as `(([Index] - 1) - [Column]) / [Total Columns])`.
+
+    We should end up with the following *measures* and *parameters*.
+
+![](images/image-508999923.png){fig-align="center" width="196"}
+
+4.  Drag `Column` and `Row` to *Columns* and *Rows* respectively. Drag **`PA`** and **`Index`** to *Detail*. At this point, we have our skeleton for the trellis chart.
+
+![](images/image-1053600448.png){fig-align="center" width="600"}
+
+## Adding the data and creating the base pyramid
+
+1.  Now to get to the fun part. First we create two more *calculated fields:* `Female` set as `SUM(IF [Sex] = 'Females' THEN [Pop]END)` , and `Male` set as `SUM(IF [Sex] = 'Males' THEN [Pop]END)`.
+2.  We then drag these two new fields into *Columns.* We should get bar graphs similar to figure below.
+
+![](images/image-1123194601.png){fig-align="center" width="600"}
+
+3.  That doesn't look right! To create the pyramid shape of we're familiar with, we need to use *Edit Axis* on the `Male` side of the axis and tick "Reversed" under "Scale" as shown below.
+
+![](images/image-30603159.png){fig-align="center" width="276"}
+
+Now we have the right shape! But something is still missing...
+
+![](images/image-315081853.png){fig-align="center" width="600"}
+
+4.  Drag the `Sex` field into the *Color* mark to differentiate the male and female bars. In this case, blue and red were used respectively.
+
+![](images/image-1355754207.png){fig-align="center" width="600"}
+
+5.  Now some planning areas seem to have empty cells. Specifically, by filtering the `PA`, we find out that there are 14 planning areas with 0 population.
+
+![](images/image-187207820.png){fig-align="center" width="680"}
+
+To fix this, we drag the `PA` field into *Filter* and set the condition as shown in the dialog box below.
+
+![](images/image-1547187092.png){fig-align="center" width="441"}
+
+Now we should have only displayed Age-Sex pyramids for those planning areas with population data.
+
+![](images/image-670481377.png){fig-align="center" width="680"}
+
+## Other formatting specifications
+
+1.  Since we're limited by the number of age-sex pyramids seen in one view (without scrolling), it's important to display the more relevant planning areas first. In this case, we will be sorting the sizes of the population from greatest to least so the planning areas with the largest population sizes according to the dataset will be shown first.
+
+    To do this, we sort `PA` by the `Pop` field as shown in the screenshot below.
+
+![](images/image-753969666.png){fig-align="center" width="200"}
+
+2.   To limit the number of rows, we can filter `Row` to be set from 0 to 2.
+
+![](images/image-1040129986.png){fig-align="center" width="300"}
+
+As shown below, the row only goes as far as index = 2, making it a 3x3 trellis chart.
+
+![](images/image-560497409.png){fig-align="center"}
+
+3.  To remove the `Column` and `Row` headers, we untick *Show Header* to exclude the column and row numbers.
+
+![](images/image-1163013586.png){fig-align="center" width="128"}
+
+4.  To add a label for planning areas, we can right click the lowest bar, and press *Annotate* $\rightarrow$ *Mark* to create a label. Set it as `<PA>` to display the planning area.
+
+![](images/image-917598116.png){fig-align="center" width="322"}
+
+Remember to remove the *Shading* and *Line* to keep the text as is.
+
+![](images/image-1126239840.png){fig-align="center" width="114"}
+
+The figure below shows the different pyramids labelled with their respective planning areas.
+
+![](images/image-1531222876.png)
+
+5.  To fix the axis describing the population values, we set the tick marks as shown in the screenshot below.
+
+![](images/image-1918573011.png){fig-align="center" width="413"}
+
+6.  Last but not the least, we reverse the order of the `Age Group` values so that it decreases from older to younger.
+
+![](images/image-788329231.png)
+
+::: {.callout-note icon="false"}
+## 🌸 PERSONAL COMMENTS
+
+I almost forgot to do this step, and that's why it's last in the order. 😅
+:::
+
+The finished product can be found on [Tableau Public](https://public.tableau.com/views/Take-home_Ex1_1/SGPAAge-SexPyramid?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link "Take-home_Ex1_1 by Anica Galano"). A sample is embedded below, however formatting is affected by the width restrictions of the page. A still image of the dashboard can be found in the next section.
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1674764044278' style='position: relative'><noscript><a href='#'><img alt='SG PA Age-Sex Pyramid ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;Take-home_Ex1_1&#47;SGPAAge-SexPyramid&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Take-home_Ex1_1&#47;SGPAAge-SexPyramid' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;Take-home_Ex1_1&#47;SGPAAge-SexPyramid&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1674764044278');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+# Short Analysis
+
+![](images/SG%20PA%20Age-Sex%20Pyramid.png){fig-align="center"}
+
+For this analysis we will be taking a look at nine planning areas, specifically, Bedok, Tampines, Jurong West, Sengkang, Woodlands, Hougang, Yishun, Choa Chu Kang and Punggol. These planning areas have the largest populations recorded in the dataset.
+
+## The pattern of the population pyramids
+
+While each pyramid has slight differences, a recurring observation from each pyramid is that the larger populations are around the middle ages (40-70s). According to [National Geographic](https://education.nationalgeographic.org/resource/population-pyramid), this type is called "Constrictive" and means that these areas have relatively low fertility rates and high life expectancy. The trend states that the population is aging.
+
+Taking a look at some specific age-sex pyramids, we observe that Punggol has the most unique shape. Since Punggol is relatively newer in the township development aspect, it makes sense that mostly people in their late 30's to early 40's are moving there. It is reportedly popular for homebuyers, which people in their 20's are usually not. With this, it also makes sense that these people are starting their families, therefore younger children are more present than teens and young adults.
+
+Though on opposite sides of Singapore, Bedok and Jurong West are the closest to having a perfect constrictive shape. Bedok is a mature residential estate and Jurong West is non-mature.
+
+## What this means for Singapore
+
+Constrictive population pyramids are usually a sign of a developed country with high economic development. Good healthcare leads to higher life expectancy and quality education is linked to lower fertility rates. However, with the aging population comes concerns about caring for the elderly and the eventual lack of manpower.
+
+![Screenshot of Singapore population and growth rate from [WorldOMeter](https://www.worldometers.info/world-population/singapore-population/)](images/image-463136784.png){fig-align="center" width="502"}
+
+As suggested by the pyramids, the growth rate of Singapore is slowing down. This is confirmed by the population and growth rate graphs above. For the population graph, we can see that the curve is slowly flattening out. The growth rate is explicitly dropping since before 2010. Measures may need to be taken to encourage an increase in fertility rates.

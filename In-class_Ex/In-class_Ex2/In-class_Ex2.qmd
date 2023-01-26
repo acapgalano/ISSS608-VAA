@@ -1,5 +1,7 @@
 ---
 title: "In-class Exercise 2: Creating Eelegant Graphics with ggplot2"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: "`r Sys.Date()`"
 ---
 
 # Overview
@@ -8,13 +10,15 @@ This document serves as my In-class Exercise 2 requirement, following the second
 
 ## Tidyverse
 
-`Tidyverse` is a collection of packages that (as named) is used to **tidy data** in the field of data analytics. The `tidyverse` workflow is shown below.
+`Tidyverse` is a collection of packages that (as named) is used to **tidy data** in the field of data analytics. The `tidyverse` packages and workflow are shown below.
 
-[![Figure taken from [Hands-on Exercise 1 slides of ISSS608 course page](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)](images/image-244973283.png){fig-align="center" width="818"}](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)
+[![Figure taken from \[Hands-on Exercise 1 slides of ISSS608 course page\](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)](images/image-244973283.png){fig-align="center" width="545"}](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)
 
 In this In-class Exercise, we make use of tidyverse, especially the included package `ggplot2` to explore the different graphics that can be designed and how they can be customized.
 
-## The Scenario
+## The Data
+
+The data consists of exam scores of students from different classes for different subjects, namely,
 
 # Getting Started
 
@@ -26,10 +30,18 @@ The function `p_load()` from **`pacman`** checks if inputted packages are alread
 pacman::p_load(tidyverse)
 ```
 
+::: {.callout-note icon="false"}
+## 💻 CODE REVIEW!
+
+> Why do we
+:::
+
 ## Importing the data
 
-```{r}
+The code chunk below uses `read.csv()` to load in the CSV file "*Exam_data.csv*" into the R environment.
 
+```{r}
+exam_data <- read.csv("data/Exam_data.csv")
 ```
 
 ## 

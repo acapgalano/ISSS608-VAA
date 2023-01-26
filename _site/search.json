@@ -88,21 +88,21 @@
     "href": "In-class_Ex/In-class_Ex2/In-class_Ex2.html",
     "title": "In-class Exercise 2: Creating Eelegant Graphics with ggplot2",
     "section": "",
-    "text": "This document serves as my In-class Exercise 2 requirement, following the second week of ISSS608 VAA lecture of Professor Kam on January 21, 2023.\n\n\nTidyverse is a collection of packages that (as named) is used to tidy data in the field of data analytics. The tidyverse workflow is shown below.\n\n\n\nFigure taken from [Hands-on Exercise 1 slides of ISSS608 course page](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)\n\n\nIn this In-class Exercise, we make use of tidyverse, especially the included package ggplot2 to explore the different graphics that can be designed and how they can be customized."
+    "text": "This document serves as my In-class Exercise 2 requirement, following the second week of ISSS608 VAA lecture of Professor Kam on January 21, 2023.\n\n\nTidyverse is a collection of packages that (as named) is used to tidy data in the field of data analytics. The tidyverse packages and workflow are shown below.\n\n\n\nFigure taken from [Hands-on Exercise 1 slides of ISSS608 course page](https://isss608-ay2022-23jan.netlify.app/hands-on_ex/hands-on_ex01/hands-on_ex01-ggplot2#/4)\n\n\nIn this In-class Exercise, we make use of tidyverse, especially the included package ggplot2 to explore the different graphics that can be designed and how they can be customized.\n\n\n\nThe data consists of exam scores of students from different classes for different subjects, namely,"
   },
   {
     "objectID": "In-class_Ex/In-class_Ex2/In-class_Ex2.html#loading-the-required-packages",
     "href": "In-class_Ex/In-class_Ex2/In-class_Ex2.html#loading-the-required-packages",
     "title": "In-class Exercise 2: Creating Eelegant Graphics with ggplot2",
     "section": "Loading the required packages",
-    "text": "Loading the required packages\nThe function p_load() from pacman checks if inputted packages are already installed. If they are, they are loaded into the R environment. Otherwise, they are installed then loaded in. The code chunk below runs p_load() for tidyverse.\n\n\nPress to toggle code\npacman::p_load(tidyverse)"
+    "text": "Loading the required packages\nThe function p_load() from pacman checks if inputted packages are already installed. If they are, they are loaded into the R environment. Otherwise, they are installed then loaded in. The code chunk below runs p_load() for tidyverse.\n\n\nPress to toggle code\npacman::p_load(tidyverse)\n\n\n\n\n\n\n\n\n💻 CODE REVIEW!\n\n\n\n\nWhy do we"
   },
   {
     "objectID": "In-class_Ex/In-class_Ex2/In-class_Ex2.html#importing-the-data",
     "href": "In-class_Ex/In-class_Ex2/In-class_Ex2.html#importing-the-data",
     "title": "In-class Exercise 2: Creating Eelegant Graphics with ggplot2",
     "section": "Importing the data",
-    "text": "Importing the data"
+    "text": "Importing the data\nThe code chunk below uses read.csv() to load in the CSV file “Exam_data.csv” into the R environment.\n\n\nPress to toggle code\nexam_data <- read.csv(\"data/Exam_data.csv\")"
   },
   {
     "objectID": "index.html",
@@ -110,5 +110,47 @@
     "title": "ISSS608: Visual Analytics and Applications",
     "section": "",
     "text": "Welcome to my journey in ISSS608: Visual Analytics and Applications."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html",
+    "title": "Take-home Exercise 1",
+    "section": "",
+    "text": "This document serves as a submission for Take-home Exercise 1 as required by the course ISSS608 Visual Analytics and Applications.\n\n\nHow do we analyze population trends? One common graphical representation is the age-sex pyramid, also known as the population pyramid. It reveals the past and present of one’s population, and gives an idea of the mortality and fertility rates of a country. In this exercise, we use Tableau to create age-sex pyramids of nine planning areas of Singapore in a single view using a trellis chart.\n\n\n\nFor this exercise, we used the “Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022” dataset available from the Department of Statistics, Singapore.\n\n\n\nScreenshot of the dataset source from SingStat\n\n\nThe dataset consists of the following data:\n\nPlanning Area (PA)\nSubzone (SZ)\nAge Group (AG)\nSex\nType of Dwelling (TOD)\nPopulation (Pop)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#setting-up-the-trellis-chart",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#setting-up-the-trellis-chart",
+    "title": "Take-home Exercise 1",
+    "section": "Setting up the trellis chart",
+    "text": "Setting up the trellis chart\nFollowing the guide by Luke Stanke called “Trellis Chart in Tableau”, we can setup our trellis through the following steps.\n\nSelect Create Calculated field from the Data pane. Create a calculated field called Index and type INDEX() as the calculation.\nCreate a parameter called Total Columns and set it as 3.\n\n\n\n\n\nCreate another calculated field called Column and set it as ([Index] - 1) % [Total Columns] . Similarly, create a calculated field called Row and set it as (([Index] - 1) - [Column]) / [Total Columns]).\nWe should end up with the following measures and parameters.\n\n\n\n\n\n\n\nDrag Column and Row to Columns and Rows respectively. Drag PA and Index to Detail. At this point, we have our skeleton for the trellis chart."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#adding-the-data-and-creating-the-base-pyramid",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#adding-the-data-and-creating-the-base-pyramid",
+    "title": "Take-home Exercise 1",
+    "section": "Adding the data and creating the base pyramid",
+    "text": "Adding the data and creating the base pyramid\n\nNow to get to the fun part. First we create two more calculated fields: Female set as SUM(IF [Sex] = 'Females' THEN [Pop]END) , and Male set as SUM(IF [Sex] = 'Males' THEN [Pop]END).\nWe then drag these two new fields into Columns. We should get bar graphs similar to figure below.\n\n\n\n\n\n\n\nThat doesn’t look right! To create the pyramid shape of we’re familiar with, we need to use Edit Axis on the Male side of the axis and tick “Reversed” under “Scale” as shown below.\n\n\n\n\n\n\nNow we have the right shape! But something is still missing…\n\n\n\n\n\n\nDrag the Sex field into the Color mark to differentiate the male and female bars. In this case, blue and red were used respectively.\n\n\n\n\n\n\n\nNow some planning areas seem to have empty cells. Specifically, by filtering the PA, we find out that there are 14 planning areas with 0 population.\n\n\n\n\n\n\nTo fix this, we drag the PA field into Filter and set the condition as shown in the dialog box below.\n\n\n\n\n\nNow we should have only displayed Age-Sex pyramids for those planning areas with population data."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#other-formatting-specifications",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#other-formatting-specifications",
+    "title": "Take-home Exercise 1",
+    "section": "Other formatting specifications",
+    "text": "Other formatting specifications\n\nSince we’re limited by the number of age-sex pyramids seen in one view (without scrolling), it’s important to display the more relevant planning areas first. In this case, we will be sorting the sizes of the population from greatest to least so the planning areas with the largest population sizes according to the dataset will be shown first.\nTo do this, we sort PA by the Pop field as shown in the screenshot below.\n\n\n\n\n\n\n\nTo limit the number of rows, we can filter Row to be set from 0 to 2.\n\n\n\n\n\n\nAs shown below, the row only goes as far as index = 2, making it a 3x3 trellis chart.\n\n\n\n\n\n\nTo remove the Column and Row headers, we untick Show Header to exclude the column and row numbers.\n\n\n\n\n\n\n\nTo add a label for planning areas, we can right click the lowest bar, and press Annotate \\(\\rightarrow\\) Mark to create a label. Set it as <PA> to display the planning area.\n\n\n\n\n\n\nRemember to remove the Shading and Line to keep the text as is.\n\n\n\n\n\nThe figure below shows the different pyramids labelled with their respective planning areas.\n\n\nTo fix the axis describing the population values, we set the tick marks as shown in the screenshot below.\n\n\n\n\n\n\n\nLast but not the least, we reverse the order of the Age Group values so that it decreases from older to younger.\n\n\n\n\n\n\n\n\n🌸 PERSONAL COMMENTS\n\n\n\nI almost forgot to do this step, and that’s why it’s last in the order. 😅\n\n\nThe finished product can be found on Tableau Public. A sample is embedded below, however formatting is affected by the width restrictions of the page. A still image of the dashboard can be found in the next section."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#the-pattern-of-the-population-pyramids",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#the-pattern-of-the-population-pyramids",
+    "title": "Take-home Exercise 1",
+    "section": "The pattern of the population pyramids",
+    "text": "The pattern of the population pyramids\nWhile each pyramid has slight differences, a recurring observation from each pyramid is that the larger populations are around the middle ages (40-70s). According to National Geographic, this type is called “Constrictive” and means that these areas have relatively low fertility rates and high life expectancy. The trend states that the population is aging.\nTaking a look at some specific age-sex pyramids, we observe that Punggol has the most unique shape. Since Punggol is relatively newer in the township development aspect, it makes sense that mostly people in their late 30’s to early 40’s are moving there. It is reportedly popular for homebuyers, which people in their 20’s are usually not. With this, it also makes sense that these people are starting their families, therefore younger children are more present than teens and young adults.\nThough on opposite sides of Singapore, Bedok and Jurong West are the closest to having a perfect constrictive shape. Bedok is a mature residential estate and Jurong West is non-mature."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#what-this-means-for-singapore",
+    "href": "Take-home_Ex/Take-home_Ex1/Take-home_Ex1.html#what-this-means-for-singapore",
+    "title": "Take-home Exercise 1",
+    "section": "What this means for Singapore",
+    "text": "What this means for Singapore\nConstrictive population pyramids are usually a sign of a developed country with high economic development. Good healthcare leads to higher life expectancy and quality education is linked to lower fertility rates. However, with the aging population comes concerns about caring for the elderly and the eventual lack of manpower.\n\n\n\nScreenshot of Singapore population and growth rate from WorldOMeter\n\n\nAs suggested by the pyramids, the growth rate of Singapore is slowing down. This is confirmed by the population and growth rate graphs above. For the population graph, we can see that the curve is slowly flattening out. The growth rate is explicitly dropping since before 2010. Measures may need to be taken to encourage an increase in fertility rates."
   }
 ]
