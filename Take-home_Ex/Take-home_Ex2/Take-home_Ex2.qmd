@@ -1,0 +1,24 @@
+---
+title: "Take-home Exercise 2"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 27 January 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+---
+
+## Overview
+
+### Objectives
+
+### Original Visualization
+
+## Getting Started
+
+### Loading the required packages
+
+###  Replicating the current graph
+
+## DataViz Makeover
+
+## 

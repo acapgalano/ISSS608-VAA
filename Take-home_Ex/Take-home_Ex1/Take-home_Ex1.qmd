@@ -95,7 +95,7 @@ Now we should have only displayed Age-Sex pyramids for those planning areas with
 
 ![](images/image-753969666.png){fig-align="center" width="200"}
 
-2.   To limit the number of rows, we can filter `Row` to be set from 0 to 2.
+2.  To limit the number of rows, we can filter `Row` to be set from 0 to 2.
 
 ![](images/image-1040129986.png){fig-align="center" width="300"}
 

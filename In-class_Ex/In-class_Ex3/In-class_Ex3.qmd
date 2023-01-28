@@ -1,0 +1,117 @@
+---
+title: "In-class Exercise 3 - Interactive Data Visualisation "
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 28 January 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+---
+
+## Overview
+
+This document serves as my In-class Exercise 3 requirement, following the second week of ISSS608 VAA lecture of Professor Kam on January 28, 2023.
+
+### Objective
+
+This in-class exercise aims to add interactivity to our visualizations.
+
+## Tableau
+
+### Superstore Data
+
+This section builds on the Tableau workbook from [In-class Exercise 1](https://public.tableau.com/app/profile/anica.galano/viz/In-class_Ex1/SalesandProfitSummary "In-class Exercise 1 - Anica Galano").
+
+#### Filters
+
+By dragging `Order Date` to *Filters*, we can filter the data by date, particularly by year. By making the filter a single list, we end up with the output below.
+
+![](images/image-1555271394.png){fig-align="center" width="600"}
+
+#### Adding a graph to tooltip
+
+By editing the *Tooltip* function, you can add a sheet (or graph) to the tooltip. Adding the line `<Sheet name="Annual Sales vs. Profit" maxwidth="300" maxheight="300" filter="<All Fields>">` and hovering over a point will produce the tooltip shown below.
+
+![](images/image-1166412641.png){fig-align="center" width="433"}
+
+The output dashboard is embedded below. It can also be found on Tableau Public [here](https://public.tableau.com/views/In-class_Ex3/SalesandProfitSummary?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link "In-class Exercise 3 - Sales and Profit, 2019-2022").
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1674887538366' style='position: relative'><noscript><a href='#'><img alt='Sales and Profit Summary, 2019-2022 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex3&#47;SalesandProfitSummary&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-class_Ex3&#47;SalesandProfitSummary' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex3&#47;SalesandProfitSummary&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1674887538366');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1477px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### Exam Data
+
+The data consists of exam scores of students for English and Maths.
+
+#### Create base graphs
+
+Before creating the goal dashboard, we need to prepare two boxplots (one for `English`, one for `Maths`) and a scatterplot (`English` vs. `Maths`). They are created by using the `ID` as *Detail*. The `Maths` boxplot will reverse the rows and columns.
+
+#### Using actions on dashboards
+
+Tableau allows us to add *Actions* to dashboards. One useful action in particular is *Highlight*, which highlights certain points, and grays out the rest.
+
+![](images/image-1427130115.png){fig-align="center" width="375"}
+
+The highlighting output should look like the screenshot below.
+
+![](images/image-544368211.png){fig-align="center" width="579"}
+
+The output dashboard is embedded below. It can also be found on Tableau Public [here](https://public.tableau.com/views/In-class_Ex3_Exam/Mathsvs_EnglishScores?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link "In-class Exercise 3 - English vs. Maths").
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1674887561896' style='position: relative'><noscript><a href='#'><img alt='Maths vs. English Scores ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex3_Exam&#47;Mathsvs_EnglishScores&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-class_Ex3_Exam&#47;Mathsvs_EnglishScores' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex3_Exam&#47;Mathsvs_EnglishScores&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1674887561896');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='827px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+## R
+
+### Getting Started
+
+#### Installing and loading R packages
+
+The code chunk below installs and loads the packages **`ggiraph`** and **`tidyverse`** into the R environment.
+
+```{r}
+pacman::p_load(ggiraph, tidyverse)
+```
+
+### Importing the data
+
+The code chunk below imports the CSV file "*Exam_data.csv*" into the R environment as a tibble.
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+#### Creating graphs using **`ggplot2`**
+
+##### Static `geom_dotplot()`
+
+```{r}
+#| fig-align: center
+ggplot(data = exam_data,
+       aes(x = MATHS)) +
+  geom_dotplot(dotsize = 0.5, 
+               fill = '#e3879e')
+```
+
+##### Interactive `geom_dotplot_interactive()`
+
+By using the code chunk below, we can create the same graph from above with the addition of a tooltip. Hovering over points will output the student ID as well.
+
+```{r}
+#| fig-align: center
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = ID),
+    stackgroups = TRUE, 
+    binwidth = 1, 
+    method = "histodot",
+    fill = '#e3879e') +
+  scale_y_continuous(NULL, 
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 6,
+  height_svg = 6*0.618
+)
+```
