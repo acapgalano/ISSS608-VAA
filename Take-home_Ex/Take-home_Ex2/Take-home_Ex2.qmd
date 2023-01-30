@@ -277,7 +277,7 @@ This is an important part of any graph, chart or visualization. While it's impor
 ```{r}
 #| fig-width: 12
 #| fig-height: 11
-#| #| code-fold: true
+#| code-fold: true
 ggplot(top_9_data, aes(x = AG, 
                        y = Percentage, 
                        fill = Sex)) + 
