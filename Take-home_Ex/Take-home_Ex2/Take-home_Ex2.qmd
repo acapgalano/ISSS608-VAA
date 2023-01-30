@@ -135,7 +135,7 @@ The function `glimpse` is used to present each column in the dataframe.
 
 ### Fixing the Age Group values
 
-By running the function `str_replace()`, we change the substring "\_to\_" to " - ", effectively removing the underscores. We also change "90_and_over" to "\> 90" for easy comprehension.
+By running the function `str_replace()`, we change the substring "\_to\_" to " - ", effectively removing the underscores. We also change"90_and_over" to "\> 90" for easy comprehension.
 
 ```{r}
 top_9_data$AG <- str_replace(top_9_data$AG, "_to_", " - ")
@@ -216,7 +216,7 @@ Now we're ready to turn our single row trellis chart to one that is distributed 
 ```{r}
 #| fig-width: 12
 #| fig-height: 10
-
+#| code-fold: true
 ggplot(top_9_data, aes(x = AG, 
                        y = Percentage, 
                        fill = Sex)) + 
@@ -242,7 +242,7 @@ The 'Age Group' labels seem to be a bit too compressed. Our legend is also unnec
 ```{r}
 #| fig-width: 12
 #| fig-height: 10
-
+#| code-fold: true
 ggplot(top_9_data, aes(x = AG, 
                        y = Percentage, 
                        fill = Sex)) + 
@@ -277,6 +277,7 @@ This is an important part of any graph, chart or visualization. While it's impor
 ```{r}
 #| fig-width: 12
 #| fig-height: 11
+#| #| code-fold: true
 ggplot(top_9_data, aes(x = AG, 
                        y = Percentage, 
                        fill = Sex)) + 
@@ -324,6 +325,7 @@ The order of the placement of `theme_bw()` or any other pre-made theme elements 
 ```{r}
 #| fig-width: 12
 #| fig-height: 11
+#| code-fold: true
 ggplot(top_9_data, aes(x = AG, 
                        y = Percentage, 
                        fill = Sex)) + 
@@ -342,16 +344,16 @@ ggplot(top_9_data, aes(x = AG,
   
   theme_bw() + # new
   
-  theme(axis.text = element_text(size = 7),
-        axis.title = element_text(size = 9),
-        legend.text = element_text(size = 8),
-        legend.title = element_text(size = 9),
-        plot.title = element_text(size = 14,
+  theme(axis.text = element_text(size = 8),
+        axis.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 10),
+        plot.title = element_text(size = 15,
                                   face = "bold"), 
-        plot.subtitle = element_text(size = 10,
+        plot.subtitle = element_text(size = 11,
                                      face = "italic"), 
-        plot.caption = element_text(size = 6), 
-        strip.text = element_text(size = 8)) +  
+        plot.caption = element_text(size = 7), 
+        strip.text = element_text(size = 10)) +  
   
   xlab("Age Group") + 
   ylab("Percentage (%)") + 
