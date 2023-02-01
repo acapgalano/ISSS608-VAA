@@ -2,9 +2,13 @@ project:
   type: website
 
 website:
+  favicon: "favicon.png"
   title: "ISSS608-VAA"
   navbar:
-    left: 
+    title: false
+    logo: "logo.png"
+    style: docked
+    left:
     - text: "Hands-on Exercises"
       menu:
         - text: "Hands-on Exercise 1: Programming Elegant DataVis with ggplot2"
@@ -17,7 +21,7 @@ website:
           href: In-class_Ex/In-class_Ex3/In-class_Ex3.qmd
     - text: "Take-home Exercises"
       menu:
-        - text: "Take-home Exercise 1"
+        - text: "Take-home Exercise 1: Age-Sex Pyramid"
           href: Take-home_Ex/Take-home_Ex1/Take-home_Ex1.qmd
         - text: "Take-home Exercise 2: DataVis Makeover"
           href: Take-home_Ex/Take-home_Ex2/Take-home_Ex2.qmd

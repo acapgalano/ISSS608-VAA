@@ -2,6 +2,6 @@
 title: "ISSS608: Visual Analytics and Applications"
 ---
 
-Welcome to my journey in ISSS608: Visual Analytics and Applications.
-
 ![](images/image-2140100922.png){fig-align="center" width="2311"}
+
+Welcome to my journey in ISSS608: Visual Analytics and Applications.
