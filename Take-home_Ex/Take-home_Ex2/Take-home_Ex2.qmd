@@ -39,7 +39,7 @@ Using `read_csv()`, we load our data set '*respopagesextod2022.csv*' into the R 
 pop_data <- read_csv("data/respopagesextod2022.csv")
 ```
 
-We have 10,098 rows and 7 columns, namely: 'PA', 'SZ', 'AG', 'Sex', 'TOD', 'Pop', and 'Time'. For this exercise, we don't need several of these rows (only focusing on Top 9 populated planning areas) and columns ('SZ', 'TOD', and 'Time' are unnecessary).
+We have 10,098 rows and 7 columns, namely: 'PA', 'SZ', 'AG', 'Sex', 'TOD', 'Pop', and 'Time'. For this exercise, we don't need several of these rows (only focusing on Top 9 populated planning areas) and columns ('SZ', 'TOD', and 'Time' are unnecessary). The next subsection shows how we obtain only the data we need and preprocess for our purpose.
 
 ### Preparing the data
 
@@ -68,7 +68,7 @@ For ease of use, we rename 'sum(Pop)' as 'Pop' using `colnames()`.
 colnames(pop_data) <- c("PA", "AG", "Sex", "Pop")
 ```
 
-Now to get just the top 9 most populated planning areas, we use the function `top_n()`. First however, we run `pop_data %>% group_by(PA) %>%  summarise(sum(Pop))` to create a tibble with just the total populations of all the planning areas and use it as the first argument of `top_n()`. The second argument is the number of top elements, and the third argument is the column or variable to base the ranking on, which is 'sum(Pop)'. Adding the `$PA` at the end of the argument allows us to take only the names of the planning areas.
+Now to get just the top 9 most populated planning areas, we use the function `top_n()`. First however, we run `pop_data %>% group_by(PA) %>%  summarise(sum(Pop))` to create a tibble with just the total populations of all the planning areas and use it as the first argument of `top_n()`. The second argument is the number of top elements, and the third argument is the column or variable to base the ranking on, which is 'sum(Pop)'. Adding the `$PA` at the end of the argument allows us to take only the names of the planning areas, as we're taking that column from the resulting tibble.
 
 ```{r}
 top_9 <- top_n(pop_data %>% 
@@ -87,7 +87,7 @@ top_9_data <- filter(pop_data, PA %in% as.vector(top_9))
 
 ## 🖌️ DataViz Makeover
 
-In this section, we go over the subject of the improvements, what can be improved, and how we build the new visualization on R.
+In this section, we go over a classmate's Take-home Exercise 1 output, what can be improved, and how we build the new visualization on R.
 
 ### Introducing the age-sex pyramid to critique
 
@@ -95,9 +95,15 @@ This visualization was taken from [Take-home_Ex01_Dashboard \| Tableau Public](h
 
 ![](images/Dashboard.png){fig-align="center"}
 
-From first impression, there are several observations to give feedback on.
+From first impression, there are several observations to give feedback on. But first, let's look at the positives.
 
-1.  **There's a lot going on**. There's a lot of graphs, a lot of bars, and lots of numbers that aren't very clear. The numerical labels also tend to block the visuals of the bar graph, making it hard to distinguish the edges. For the sake of the assignment as well, it does not seem necessary to include the age-sex pyramid of the whole Singapore, and population of each planning area. The gray bars seem to be the total population of each age group used to compare to each of the sexes, however, it also seems very unnecessary to the purpose of the age-sex pyramid. The label of "Planning Area" is also just taking up space, but it should be clear that the strip names are the planning areas from the title.
+1.  It was my first time seeing an age-sex pyramid with the total as a shadow behind the bars to use as comparison. There was also a pyramid for the total of SG, and a bar graph representing the population of the planning areas presented. In general, the creator wanted to give as much information as possible.
+2.  The colors used to color the bars according to sex are "stereotypical" in a sense that it's easy to comprehend what they represent.
+3.  The creator followed the guideline from the class where categorical variables should not make use of tick marks.
+
+With that, I have the following critiques to make:
+
+1.  **There's a lot, arguably too much, going on**. There's a lot of graphs, a lot of bars, and lots of numbers that aren't very clear. The numerical labels also tend to block the visuals of the bar graph, making it hard to distinguish the edges. For the sake of the assignment as well, it does not seem necessary to include the age-sex pyramid of the whole Singapore, and population of each planning area. The gray bars seem to be the total population of each age group used to compare to each of the sexes, however, it also seems very unnecessary to the purpose of the age-sex pyramid. The label of "Planning Area" is also just taking up space, but it should be clear that the strip names are the planning areas from the title.
 
     ![](images/Dashboard%20-%20annotated.png)
 
@@ -235,9 +241,15 @@ ggplot(top_9_data, aes(x = AG,
 
 Now we can clearly see the shape of each of the pyramids.
 
+::: {.callout-note icon="false"}
+## 🖊️ TAKE NOTE!
+
+At this point the upper limit for `scale_y_continuous()` was set to 0.06 instead of 0.6 since the scales would be per planning area already. By running `max()` on the 'Percentage' column, we get that the highest value and between 5-6%, therefore we set the upper limit to 0.06.
+:::
+
 ### Fixing axis and legend details
 
-The 'Age Group' labels seem to be a bit too compressed. Our legend is also unnecessarily large. Using `theme()` and setting `element_text()` we can format the different text in our chart.
+The 'Age Group' labels seem to be a bit too compressed. Our legend is also unnecessarily large. Using `theme()` and setting `element_text()` we can format the different text in our chart. Also under `theme()`, we can set `axis.ticks.y = element_blank()` in order to remove the tick marks on the 'Age Group' axis since it is a categorical variable.
 
 ```{r}
 #| fig-width: 12
@@ -263,7 +275,8 @@ ggplot(top_9_data, aes(x = AG,
   theme(axis.text = element_text(size = 7),
         axis.title = element_text(size = 9),
         legend.text = element_text(size = 8),
-        legend.title = element_text(size = 9)) + 
+        legend.title = element_text(size = 9),
+        axis.ticks.y = element_blank()) + 
   
   xlab("Age Group") + 
   
@@ -298,6 +311,7 @@ ggplot(top_9_data, aes(x = AG,
         axis.title = element_text(size = 9),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 9),
+        axis.ticks.y = element_blank(),
         plot.title = element_text(size = 14,
                                   face = "bold"), # new
         plot.subtitle = element_text(size = 10), #new
@@ -308,16 +322,16 @@ ggplot(top_9_data, aes(x = AG,
   ylab("Percentage (%)") + 
   labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", #new
        subtitle = "Age group distribution of percentage population for males and females in nine of the most populated planning areas in Singapore", #new
-       caption ="Data Soruce: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + #new
+       caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + #new
   facet_wrap(~ PA, nrow = 3)
 ```
 
 ### Changing the theme to be more visually appealing
 
-By adding `theme_bw()` (from the given [theme elements](https://ggplot2.tidyverse.org/reference/element.html "ggplot2 - Theme elements")) we get a cleaner grid and sharper panels. The fill colors for the 'Sex' were also changed using `scale_fill_manual()`.
+By adding `theme_bw()` (from the given [theme elements](https://ggplot2.tidyverse.org/reference/element.html "ggplot2 - Theme elements")) we get a cleaner grid and sharper panels. The fill colors for the 'Sex' were also changed using `scale_fill_manual()`. Finally, an additional argument was added to the `geom_bar()` objects called *'color*' which adds borders to the bars to look more defined.
 
 ::: {.callout-note icon="false"}
-## ❗ TAKE NOTE!
+## 🖊️ TAKE NOTE!
 
 The order of the placement of `theme_bw()` or any other pre-made theme elements could ruin your customized formats. In this case, I placed it before `theme()`, otherwise it would override the changes I made to the title and subtitle text.
 :::
@@ -331,10 +345,12 @@ ggplot(top_9_data, aes(x = AG,
                        fill = Sex)) + 
   geom_bar(data = subset(top_9_data, 
                          Sex == "Males"), 
-           stat = 'identity') + 
+           stat = 'identity',
+           color = 'black') +  # new
   geom_bar(data = subset(top_9_data, 
                          Sex == "Females"), 
-           stat = 'identity') +
+           stat = 'identity',
+           color = 'black') +  # new 
   
   scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
                     limits = c(-0.06, 0.06),
@@ -348,6 +364,7 @@ ggplot(top_9_data, aes(x = AG,
         axis.title = element_text(size = 10),
         legend.text = element_text(size = 9),
         legend.title = element_text(size = 10),
+        axis.ticks.y = element_blank(),
         plot.title = element_text(size = 15,
                                   face = "bold"), 
         plot.subtitle = element_text(size = 11,
@@ -359,19 +376,235 @@ ggplot(top_9_data, aes(x = AG,
   ylab("Percentage (%)") + 
   labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
        subtitle = "Age group distribution of percentage population for males and females in nine of the most populated planning areas in Singapore", 
-       caption ="Data Soruce: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
+       caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
 
   scale_fill_manual(values=c("#ff63a4", # new
                              "#2d74f7")) + # new
   facet_wrap(~ PA, nrow = 3)
+
 ```
 
-With this we have our final product.
+With this we have our final product. Simpler is better?
 
-## 💬 Remarks and Recommendations
+## 💬 Remarks, Doubts and Recommendations
 
-1.  I limited the part to work on to just the trellis chart and did not include the full Singapore pyramid and planning area population bar graphs.
+1.  I limited the exercise scope to just the trellis chart and did not include the full Singapore pyramid and planning area population bar graphs.
+
 2.  I originally wanted to recreate the entire graph of whichever Take-home Exercise 1 I would choose, but then I realized at some point that I wouldn't be able to fully recreate them in R (or at least I wouldn't know how to). And so I opted to just build from the ground up.
-3.  If this were not a trellis chart, it may be possible to explore placing the 'Age Group' axis in between the *Males* and *Females* bars. However, in a trellis chart, it may seem repetitive to have it in every panel.
-4.  Another thing that I feel like would be okay if not for the trellis chart format is adding the percentage labels. I opted to not add it now because the graphs would seem too cluttered. It's also less likely that the labels would be seen anyway.
-5.  It was only after I had worked on the code that I realized we were ideally not supposed to make any changes to the dataset. I'm unsure if converting to percentages counts, but if it does, then that was my mistake.
+
+3.  It was only after I had worked on the code that I realized we were ideally not supposed to make any changes to the dataset. I'm unsure if converting to percentages counts, but if it does, then that was my mistake.
+
+4.  If this were not a trellis chart, it may be possible to explore placing the 'Age Group' axis in between the *Males* and *Females* bars. However, in a trellis chart, it may seem repetitive to have it in every panel.
+
+5.  Another thing that I feel like would be okay if not for the trellis chart format is adding the percentage labels. I opted to not add it now because the graphs would seem too cluttered and the labels would likely not be very visible. Below is a code chunk using `geom_text()` to illustrate what the output would have been with percentage labels.
+
+    ```{r}
+    #| fig-width: 12
+    #| fig-height: 11
+    #| code-fold: true
+    ggplot(top_9_data, 
+                aes(x = AG, 
+                    y = Percentage, 
+                    fill = Sex)) + 
+      geom_bar(data = subset(top_9_data, 
+                             Sex == "Males"), 
+               stat = 'identity',
+               color = 'black') +  
+      geom_bar(data = subset(top_9_data, 
+                             Sex == "Females"), 
+               stat = 'identity',
+               color = 'black') +  
+        geom_text(data = subset(top_9_data, 
+                             Sex == "Males"),
+                  aes(label = sprintf("%0.2f", 
+                              round(abs(Percentage)*100, 
+                                    digits = 2))),
+                  hjust = 1.2,
+                 size = 2) +  # new
+        geom_text(data = subset(top_9_data, 
+                             Sex == "Females"),
+                  aes(label = sprintf("%0.2f", 
+                              round(Percentage*100, 
+                                    digits = 2))),
+                  hjust = -0.5,
+                 size = 2) +  # new
+      
+      scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
+                        limits = c(-0.06, 0.06),
+                        breaks = seq(-0.06,0.06, 
+                                     by = 0.02)) + 
+      scale_x_discrete(limits = AG_sort) +
+      coord_flip() + 
+      
+      theme_bw() + 
+      
+      theme(axis.text = element_text(size = 8),
+            axis.title = element_text(size = 10),
+            legend.text = element_text(size = 9),
+            legend.title = element_text(size = 10),
+            axis.ticks.y = element_blank(),
+            plot.title = element_text(size = 15,
+                                      face = "bold"), 
+            plot.subtitle = element_text(size = 11,
+                                         face = "italic"), 
+            plot.caption = element_text(size = 7), 
+            strip.text = element_text(size = 10)) + 
+      
+      xlab("Age Group") + 
+      ylab("Percentage (%)") + 
+      labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
+           subtitle = "Age group distribution of percentage population for males and females in nine of the most populated planning areas in Singapore", 
+           caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
+
+      scale_fill_manual(values=c("#ff63a4",
+                                 "#2d74f7")) +
+      facet_wrap(~ PA, nrow = 3)
+
+    ```
+
+    1.  Unrelated to the visualization being a trellis chart, I was considering removing the legend because of all the negative space it creates. Removing it would provide more space for the pyramids to stretch as well. Following the original Take-home Exercise 1 output, I could have color-coded the words "males" and "females" in the subtitle to use as a "legend". However, I was unsure of whether the text was too small to notice the font color change.
+
+        ```{r}
+        #| fig-width: 12
+        #| fig-height: 11
+        #| code-fold: true
+
+        pacman::p_load(ggtext)
+
+        ggplot(top_9_data, 
+                    aes(x = AG, 
+                        y = Percentage, 
+                        fill = Sex)) + 
+          geom_bar(data = subset(top_9_data, 
+                                 Sex == "Males"), 
+                   stat = 'identity',
+                   color = 'black') +  
+          geom_bar(data = subset(top_9_data, 
+                                 Sex == "Females"), 
+                   stat = 'identity',
+                   color = 'black') +  
+            geom_text(data = subset(top_9_data, 
+                                 Sex == "Males"),
+                      aes(label = sprintf("%0.2f", 
+                                  round(abs(Percentage)*100, 
+                                        digits = 2))),
+                      hjust = 1.2,
+                     size = 2) +  # new
+            geom_text(data = subset(top_9_data, 
+                                 Sex == "Females"),
+                      aes(label = sprintf("%0.2f", 
+                                  round(Percentage*100, 
+                                        digits = 2))),
+                      hjust = -0.5,
+                     size = 2) +  # new
+          
+          scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
+                            limits = c(-0.06, 0.06),
+                            breaks = seq(-0.06,0.06, 
+                                         by = 0.02)) + 
+          scale_x_discrete(limits = AG_sort) +
+          coord_flip() + 
+          
+          theme_bw() + 
+          
+          theme(axis.text = element_text(size = 8),
+                axis.title = element_text(size = 10),
+                legend.position = "none", # new
+                axis.ticks.y = element_blank(),
+                plot.title = element_text(size = 15,
+                                          face = "bold"), 
+                plot.subtitle = element_markdown(size = 11,
+                                             face = "italic"), 
+                plot.caption = element_text(size = 7), 
+                strip.text = element_text(size = 10)) + 
+          
+          xlab("Age Group") + 
+          ylab("Percentage (%)") + 
+          labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
+               subtitle = "Age group distribution of percentage population for <span style='color:#2d74f7;'>males</span> and <span style='color:#ff63a4;'>females</span> in nine of the most populated planning areas in Singapore", 
+               caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
+
+          scale_fill_manual(values=c("#ff63a4",
+                                     "#2d74f7")) +
+          facet_wrap(~ PA, nrow = 3)
+        ```
+
+        The code chunk above uses the package **`ggtext`** which is an extension of ggplot that allows markdown/HTML rendering for the plots. By setting the '*subtitle*' to '*element_markdown()*' in `theme()`, We can set the color of different text snippets in subtitle. The legend was also removed by setting `legend.position = "none"`.
+
+6.  One thing I initially thought would help with easily understanding the population structure was by adding `geom_rect()` objects as background colors symbolizing a classification of age groups. For example if we follow the definitions in [this article](https://bmcneurol.biomedcentral.com/articles/10.1186/s12883-020-01888-w#:~:text=Appropriate%20classifications%20of%20the%20age,years%20old%20(elderly%20group)) on age group classification, then we'd have
+    0--14 years old (*pediatric group*), 15--47 years old (*youth group*), 48--63 years old (*middle-aged group*), and ≥ 64 years old (*elderly group*). The background would then be colored behind the bars according to the groupings to easily identify which age group classification has more or less populations. However, I went against this because I thought having a plot with too many colors and filled in every space with colors would be too painful to the eyes.
+
+7.  In relation to the point above, I also considered including t[he age dependency ratio and/or child dependency ratio](https://www.singstat.gov.sg/-/media/files/standards_and_classifications/nsa.ashx) at the side of each pyramid.
+
+8.  Lastly, given our recent lesson on interactivity, we can also apply tooltips to the bars for easy comprehension. A simple example is given below produced by `ggiraph`. The tooltip presents the sex, age group, percentage and population. (*Figure adjustments using special Quarto syntax seem to not affect this figure so work needs to be done to adjust the plot.*)
+
+```{r}
+#| fig-width: 12
+#| fig-height: 11
+#| code-fold: true
+pacman::p_load(ggiraph)
+
+g <- ggplot(top_9_data, aes(x = AG, 
+                       y = Percentage, 
+                       fill = Sex)) + 
+  geom_bar_interactive(data = subset(top_9_data, 
+                         Sex == "Males"), 
+           stat = 'identity',
+           aes(tooltip = paste0("Males \n",
+                                "Age Group: ",
+                                AG,
+                                "\n Percentage: ", 
+                                sprintf("%0.2f", 
+                                round(abs(Percentage)*100, 
+                                digits = 2)),
+                                "% \n Population: ",
+                                Pop))) + 
+  geom_bar_interactive(data = subset(top_9_data, 
+                         Sex == "Females"), 
+           stat = 'identity',
+           aes(tooltip = paste0("Females \n",
+                                "Age Group: ",
+                                AG,
+                                "\n Percentage: ", 
+                                sprintf("%0.2f", 
+                                round(Percentage*100, 
+                                digits = 2)),
+                                "% \n Population: ",
+                                Pop))) +
+  
+  scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
+                    limits = c(-0.06, 0.06),
+                    breaks = seq(-0.06,0.06, by = 0.02)) + 
+  scale_x_discrete(limits = AG_sort) +
+  coord_flip() + 
+  
+  theme_bw() + 
+  
+  theme(axis.text = element_text(size = 4),
+        axis.title = element_text(size = 7),
+        legend.position = "none",
+        plot.title = element_text(size = 12,
+                                  face = "bold"), 
+        plot.subtitle = element_markdown(size = 6,
+                                     face = "italic"), 
+        plot.caption = element_text(size = 4), 
+        strip.text = element_text(size = 6,
+                                  margin = margin(0.1,0,0.1,0, "cm"))) +  
+  xlab("Age Group") + 
+  ylab("Percentage (%)") + 
+  labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
+       subtitle = "Age group distribution of percentage population for <span style='color:#2d74f7;'>males</span> and <span style='color:#ff63a4;'>females</span> in nine of the most populated planning areas in Singapore", 
+       caption ="Data Soruce: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
+
+  scale_fill_manual(values=c("#ff63a4", 
+                             "#2d74f7")) + 
+  facet_wrap(~ PA, nrow = 3)
+
+girafe(
+  ggobj = g,
+  width_svg = 6,
+  height_svg = 6*0.618
+)
+```
+
+At the end of the day, a lot is possible with R. I hope to further explore these possibilities with future exercises.
