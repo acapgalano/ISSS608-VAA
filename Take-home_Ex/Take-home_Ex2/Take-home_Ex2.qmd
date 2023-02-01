@@ -462,81 +462,81 @@ With this we have our final product. Simpler is better?
 
     ```
 
-    1.  Unrelated to the visualization being a trellis chart, I was considering removing the legend because of all the negative space it creates. Removing it would provide more space for the pyramids to stretch as well. Following the original Take-home Exercise 1 output, I could have color-coded the words "males" and "females" in the subtitle to use as a "legend". However, I was unsure of whether the text was too small to notice the font color change.
+6.  Unrelated to the visualization being a trellis chart, I was considering removing the legend because of all the negative space it creates. Removing it would provide more space for the pyramids to stretch as well. Following the original Take-home Exercise 1 output, I could have color-coded the words "males" and "females" in the subtitle to use as a "legend". However, I was unsure of whether the text was too small to notice the font color change.
 
-        ```{r}
-        #| fig-width: 12
-        #| fig-height: 11
-        #| code-fold: true
+    ```{r}
+    #| fig-width: 12
+    #| fig-height: 11
+    #| code-fold: true
 
-        pacman::p_load(ggtext)
+    pacman::p_load(ggtext)
 
-        ggplot(top_9_data, 
-                    aes(x = AG, 
-                        y = Percentage, 
-                        fill = Sex)) + 
-          geom_bar(data = subset(top_9_data, 
-                                 Sex == "Males"), 
-                   stat = 'identity',
-                   color = 'black') +  
-          geom_bar(data = subset(top_9_data, 
-                                 Sex == "Females"), 
-                   stat = 'identity',
-                   color = 'black') +  
-            geom_text(data = subset(top_9_data, 
-                                 Sex == "Males"),
-                      aes(label = sprintf("%0.2f", 
-                                  round(abs(Percentage)*100, 
-                                        digits = 2))),
-                      hjust = 1.2,
-                     size = 2) +  # new
-            geom_text(data = subset(top_9_data, 
-                                 Sex == "Females"),
-                      aes(label = sprintf("%0.2f", 
-                                  round(Percentage*100, 
-                                        digits = 2))),
-                      hjust = -0.5,
-                     size = 2) +  # new
-          
-          scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
-                            limits = c(-0.06, 0.06),
-                            breaks = seq(-0.06,0.06, 
-                                         by = 0.02)) + 
-          scale_x_discrete(limits = AG_sort) +
-          coord_flip() + 
-          
-          theme_bw() + 
-          
-          theme(axis.text = element_text(size = 8),
-                axis.title = element_text(size = 10),
-                legend.position = "none", # new
-                axis.ticks.y = element_blank(),
-                plot.title = element_text(size = 15,
-                                          face = "bold"), 
-                plot.subtitle = element_markdown(size = 11,
-                                             face = "italic"), 
-                plot.caption = element_text(size = 7), 
-                strip.text = element_text(size = 10)) + 
-          
-          xlab("Age Group") + 
-          ylab("Percentage (%)") + 
-          labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
-               subtitle = "Age group distribution of percentage population for <span style='color:#2d74f7;'>males</span> and <span style='color:#ff63a4;'>females</span> in nine of the most populated planning areas in Singapore", 
-               caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
+    ggplot(top_9_data, 
+                aes(x = AG, 
+                    y = Percentage, 
+                    fill = Sex)) + 
+      geom_bar(data = subset(top_9_data, 
+                             Sex == "Males"), 
+               stat = 'identity',
+               color = 'black') +  
+      geom_bar(data = subset(top_9_data, 
+                             Sex == "Females"), 
+               stat = 'identity',
+               color = 'black') +  
+        geom_text(data = subset(top_9_data, 
+                             Sex == "Males"),
+                  aes(label = sprintf("%0.2f", 
+                              round(abs(Percentage)*100, 
+                                    digits = 2))),
+                  hjust = 1.2,
+                 size = 2) +  # new
+        geom_text(data = subset(top_9_data, 
+                             Sex == "Females"),
+                  aes(label = sprintf("%0.2f", 
+                              round(Percentage*100, 
+                                    digits = 2))),
+                  hjust = -0.5,
+                 size = 2) +  # new
+      
+      scale_y_continuous(labels = function(x) paste0(abs(x*100), "%"),
+                        limits = c(-0.06, 0.06),
+                        breaks = seq(-0.06,0.06, 
+                                     by = 0.02)) + 
+      scale_x_discrete(limits = AG_sort) +
+      coord_flip() + 
+      
+      theme_bw() + 
+      
+      theme(axis.text = element_text(size = 8),
+            axis.title = element_text(size = 10),
+            legend.position = "none", # new
+            axis.ticks.y = element_blank(),
+            plot.title = element_text(size = 15,
+                                      face = "bold"), 
+            plot.subtitle = element_markdown(size = 11,
+                                         face = "italic"), 
+            plot.caption = element_text(size = 7), 
+            strip.text = element_text(size = 10)) + 
+      
+      xlab("Age Group") + 
+      ylab("Percentage (%)") + 
+      labs(title = "Age-Sex Pyramid of Top 9 Most Populated Planning Areas, 2022", 
+           subtitle = "Age group distribution of percentage population for <span style='color:#2d74f7;'>males</span> and <span style='color:#ff63a4;'>females</span> in nine of the most populated planning areas in Singapore", 
+           caption ="Data Source: Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022 (Singapore Department of Statistics (DOS))")  + 
 
-          scale_fill_manual(values=c("#ff63a4",
-                                     "#2d74f7")) +
-          facet_wrap(~ PA, nrow = 3)
-        ```
+      scale_fill_manual(values=c("#ff63a4",
+                                 "#2d74f7")) +
+      facet_wrap(~ PA, nrow = 3)
+    ```
 
-        The code chunk above uses the package **`ggtext`** which is an extension of ggplot that allows markdown/HTML rendering for the plots. By setting the '*subtitle*' to '*element_markdown()*' in `theme()`, We can set the color of different text snippets in subtitle. The legend was also removed by setting `legend.position = "none"`.
+    The code chunk above uses the package **`ggtext`** which is an extension of ggplot that allows markdown/HTML rendering for the plots. By setting the '*subtitle*' to '*element_markdown()*' in `theme()`, We can set the color of different text snippets in subtitle. The legend was also removed by setting `legend.position = "none"`.
 
-6.  One thing I initially thought would help with easily understanding the population structure was by adding `geom_rect()` objects as background colors symbolizing a classification of age groups. For example if we follow the definitions in [this article](https://bmcneurol.biomedcentral.com/articles/10.1186/s12883-020-01888-w#:~:text=Appropriate%20classifications%20of%20the%20age,years%20old%20(elderly%20group)) on age group classification, then we'd have
+7.  One thing I initially thought would help with easily understanding the population structure was by adding `geom_rect()` objects as background colors symbolizing a classification of age groups. For example if we follow the definitions in [this article](https://bmcneurol.biomedcentral.com/articles/10.1186/s12883-020-01888-w#:~:text=Appropriate%20classifications%20of%20the%20age,years%20old%20(elderly%20group)) on age group classification, then we'd have
     0--14 years old (*pediatric group*), 15--47 years old (*youth group*), 48--63 years old (*middle-aged group*), and ≥ 64 years old (*elderly group*). The background would then be colored behind the bars according to the groupings to easily identify which age group classification has more or less populations. However, I went against this because I thought having a plot with too many colors and filled in every space with colors would be too painful to the eyes.
 
-7.  In relation to the point above, I also considered including t[he age dependency ratio and/or child dependency ratio](https://www.singstat.gov.sg/-/media/files/standards_and_classifications/nsa.ashx) at the side of each pyramid.
+8.  In relation to the point above, I also considered including t[he age dependency ratio and/or child dependency ratio](https://www.singstat.gov.sg/-/media/files/standards_and_classifications/nsa.ashx) at the side of each pyramid.
 
-8.  Lastly, given our recent lesson on interactivity, we can also apply tooltips to the bars for easy comprehension. A simple example is given below produced by `ggiraph`. The tooltip presents the sex, age group, percentage and population. (*Figure adjustments using special Quarto syntax seem to not affect this figure so work needs to be done to adjust the plot.*)
+9.  Lastly, given our recent lesson on interactivity, we can also apply tooltips to the bars for easy comprehension. A simple example is given below produced by `ggiraph`. The tooltip presents the sex, age group, percentage and population. (*Figure adjustments using special Quarto syntax seem to not affect this figure so work needs to be done to adjust the plot.*)
 
 ```{r}
 #| fig-width: 12
