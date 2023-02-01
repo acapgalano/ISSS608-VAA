@@ -4,6 +4,7 @@ project:
 website:
   favicon: "favicon.png"
   title: "ISSS608-VAA"
+  page-navigation: true
   navbar:
     title: false
     logo: "logo.png"

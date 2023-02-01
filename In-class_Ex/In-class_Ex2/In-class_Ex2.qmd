@@ -1,7 +1,8 @@
 ---
 title: "In-class Exercise 2: Creating Eelegant Graphics with ggplot2"
 author: "Anica Clarice Antonella P. Galano (acapgalano)"
-date: "`r Sys.Date()`"
+date: 21 January 2023
+date-modified: "`r Sys.Date()`"
 ---
 
 # Overview

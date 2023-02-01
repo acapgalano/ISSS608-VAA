@@ -1,5 +1,8 @@
 ---
 title: "Take-home Exercise 1 - Age-Sex Pyramid"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 26 January 2023
+date-modified: "`r Sys.Date()`"
 ---
 
 # Overview
@@ -14,7 +17,7 @@ How do we analyze population trends? One common graphical representation is the 
 
 For this exercise, we used the "***Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2022"*** dataset available from the [Department of Statistics, Singapore](https://www.singstat.gov.sg/).
 
-![Screenshot of the dataset source from [SingStat](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data "SingStat - Geographic Distribution")](images/image-70952309.png){fig-align="center" width="800"}
+![Screenshot of the dataset source from [SingStat](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data "SingStat - Geographic Distribution")](images/image-70952309.png){fig-alt="Screenshot of the dataset source from SingStat" fig-align="center" width="800"}
 
 The dataset consists of the following data:
 

@@ -1,7 +1,23 @@
 ---
-title: "ISSS608: Visual Analytics and Applications"
+title: "It's a Visual World ✿"
+listing:
+  type: grid
+  max-items: 3
+  image-placeholder: placeholder.png
+  contents:
+    - "Take-home_Ex/*/*.qmd"
+    - "In-class_Ex/*/*.qmd"
+  sort: 
+    - "date desc"
+toc: false
 ---
 
 ![](images/image-2140100922.png){fig-align="center" width="2311"}
 
-Welcome to my journey in ISSS608: Visual Analytics and Applications.
+### Welcome to my ISSS608 - Visual Analytics and Applications journey!
+
+In this website, you'll find my submissions for the different requirements in ISSS608 - Visual Analytics and Applications.
+
+By the end of the semester, I will feel just like the image above. Just kidding!
+
+### Check out the most recent submissions...
