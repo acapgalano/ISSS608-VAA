@@ -32,6 +32,7 @@ exam_data <- read_csv("data/Exam_data.csv")
 ### Creating our first basic plot
 
 ```{r}
+#| fig-align: center
 plot_ly(
   data = exam_data,
   x = ~ENGLISH,
@@ -45,6 +46,7 @@ We can observe that by default we are given a tooltip containing the pair of 'EN
 ### Creating an alternative `ggplot` plot with `plotly`
 
 ```{r}
+#| fig-align: center
 p <- ggplot(data = exam_data,
             aes( x = MATHS,
                  y = ENGLISH)) + 
@@ -60,11 +62,12 @@ ggplotly(p)
 Use **`ggplot`** if you want to have control over the design, and use **`plotly`** for easier and better interactivity. You can still control the design if you use native **`ggplot`** objects.
 :::
 
-## 📈 Performing Visual Statistical Analysis 
+## 📈 Performing Visual Statistical Analysis
 
-### Using `ggstatsplot::ggbetweenstats()` 
+### Using `ggstatsplot::ggbetweenstats()`
 
 ```{r}
+#| fig-align: center
 ggbetweenstats(
   data = exam_data,
   x = GENDER,
@@ -76,9 +79,10 @@ ggbetweenstats(
 
 As shown above we can observe the sample means represented by the red dot and labelled accordingly. We can also observe that Welch test was also performed with a p-value of 0.53. List of statistical tests can be found [here](https://indrajeetpatil.github.io/statsExpressions/ "{statsExpressions}: Tidy dataframes and expressions with statistical details").
 
-### Using `ggstatsplot::gscatterstats()` 
+### Using `ggstatsplot::gscatterstats()`
 
 ```{r}
+#| fig-align: center
 ggscatterstats(
   data = exam_data,
   x = MATHS,
@@ -110,6 +114,7 @@ check_collinearity(model)
 ```
 
 ```{r}
+#| fig-align: center
 check_c <- check_collinearity(model)
 
 plot(check_c)
@@ -120,6 +125,7 @@ Any VIF over 10, means that there are variables that are highly collinear.
 #### Checking normaliy assumption
 
 ```{r}
+#| fig-align: center
 check_n <- check_normality(model)
 
 plot(check_n)
@@ -128,6 +134,9 @@ plot(check_n)
 #### Checking EVERYTHING in one go
 
 ```{r}
+#| fig-align: center
+#| fig-width: 12
+#| fig-height: 10
 check_model(model)
 ```
 
@@ -149,6 +158,8 @@ my_sum <- exam_data %>%
 #### Using `ggplot`
 
 ```{r}
+#| fig-align: center
+#| fig-width: 8
 ggplot(my_sum) +
   geom_errorbar(
     aes(x = RACE, 
