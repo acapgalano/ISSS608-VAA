@@ -529,10 +529,9 @@ With this we have our final product. Simpler is better?
       facet_wrap(~ PA, nrow = 3)
     ```
 
-    The code chunk above uses the package **`ggtext`** which is an extension of ggplot that allows markdown/HTML rendering for the plots. By setting the '*subtitle*' to '*element_markdown()*' in `theme()`, We can set the color of different text snippets in subtitle. The legend was also removed by setting `legend.position = "none"`.
+    The code chunk above uses the package **`ggtext`** which is an extension of ggplot that allows markdown/HTML rendering for the plots. By setting the '*subtitle*' to '*element_markdown()*' in `theme()`, we can set the color of different text snippets in subtitle. The legend was also removed by setting `legend.position = "none"`.
 
-7.  One thing I initially thought would help with easily understanding the population structure was by adding `geom_rect()` objects as background colors symbolizing a classification of age groups. For example if we follow the definitions in [this article](https://bmcneurol.biomedcentral.com/articles/10.1186/s12883-020-01888-w#:~:text=Appropriate%20classifications%20of%20the%20age,years%20old%20(elderly%20group)) on age group classification, then we'd have
-    0--14 years old (*pediatric group*), 15--47 years old (*youth group*), 48--63 years old (*middle-aged group*), and ≥ 64 years old (*elderly group*). The background would then be colored behind the bars according to the groupings to easily identify which age group classification has more or less populations. However, I went against this because I thought having a plot with too many colors and filled in every space with colors would be too painful to the eyes.
+7.  One thing I initially thought would help with easily understanding the population structure was by adding `geom_rect()` objects as background colors symbolizing a classification of age groups. For example if we follow the definitions in [this article](https://bmcneurol.biomedcentral.com/articles/10.1186/s12883-020-01888-w#:~:text=Appropriate%20classifications%20of%20the%20age,years%20old%20(elderly%20group)) on age group classification, then we'd have 0--14 years old (*pediatric group*), 15--47 years old (*youth group*), 48--63 years old (*middle-aged group*), and ≥ 64 years old (*elderly group*). The background would then be colored behind the bars according to the groupings to easily identify which age group classification has more or less populations. However, I went against this because I thought having a plot with too many colors and filled in every space with colors would be too painful to the eyes.
 
 8.  In relation to the point above, I also considered including t[he age dependency ratio and/or child dependency ratio](https://www.singstat.gov.sg/-/media/files/standards_and_classifications/nsa.ashx) at the side of each pyramid.
 
@@ -550,6 +549,8 @@ g <- ggplot(top_9_data, aes(x = AG,
   geom_bar_interactive(data = subset(top_9_data, 
                          Sex == "Males"), 
            stat = 'identity',
+           color = 'black',
+           size = 0.2,
            aes(tooltip = paste0("Males \n",
                                 "Age Group: ",
                                 AG,
@@ -562,6 +563,8 @@ g <- ggplot(top_9_data, aes(x = AG,
   geom_bar_interactive(data = subset(top_9_data, 
                          Sex == "Females"), 
            stat = 'identity',
+           color = 'black',
+           size = 0.2,
            aes(tooltip = paste0("Females \n",
                                 "Age Group: ",
                                 AG,
@@ -580,14 +583,17 @@ g <- ggplot(top_9_data, aes(x = AG,
   
   theme_bw() + 
   
-  theme(axis.text = element_text(size = 4),
+  theme(axis.text = element_text(size = 5),
         axis.title = element_text(size = 7),
         legend.position = "none",
-        plot.title = element_text(size = 12,
+        axis.ticks.y = element_blank(),
+        plot.title = element_text(size = 11,
                                   face = "bold"), 
         plot.subtitle = element_markdown(size = 6,
                                      face = "italic"), 
         plot.caption = element_text(size = 4), 
+        panel.grid.minor = element_line(size = 0.2), 
+        panel.grid.major = element_line(size = 0.5),
         strip.text = element_text(size = 6,
                                   margin = margin(0.1,0,0.1,0, "cm"))) +  
   xlab("Age Group") + 
@@ -603,7 +609,7 @@ g <- ggplot(top_9_data, aes(x = AG,
 girafe(
   ggobj = g,
   width_svg = 6,
-  height_svg = 6*0.618
+  height_svg = 8.5*0.618
 )
 ```
 

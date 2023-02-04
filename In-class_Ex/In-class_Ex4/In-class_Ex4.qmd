@@ -13,12 +13,12 @@ editor: visual
 
 This document serves as my In-class Exercise 4 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 4, 2023.
 
-## 🌱 Getting Started 
+## 🌱 Getting Started
 
 ### Installing packages into the R environment
 
 ```{r}
-pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, tidyverse, ggstatsplot)
+pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, ggstatsplot, readxl, performance, parameters, see, tidyverse)
 ```
 
 ### Loading the data into the R environment
@@ -60,7 +60,9 @@ ggplotly(p)
 Use **`ggplot`** if you want to have control over the design, and use **`plotly`** for easier and better interactivity. You can still control the design if you use native **`ggplot`** objects.
 :::
 
-## Performing Visual Statistical Analysis Using `ggstatsplot`
+## 📈 Performing Visual Statistical Analysis Using `ggstatsplot`
+
+### Using `ggbetweenstats()` 
 
 ```{r}
 ggbetweenstats(
@@ -73,3 +75,56 @@ ggbetweenstats(
 ```
 
 As shown above we can observe the sample means represented by the red dot and labelled accordingly. We can also observe that Welch test was also performed with a p-value of 0.53. List of statistical tests can be found [here](https://indrajeetpatil.github.io/statsExpressions/ "{statsExpressions}: Tidy dataframes and expressions with statistical details").
+
+### Using `ggscatterstats()` 
+
+```{r}
+ggscatterstats(
+  data = exam_data,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+)
+```
+
+## 📊 Exploring Some `easystats` packages
+
+### Loading an Excel file into the R environment
+
+```{r}
+car_resale <- read_xls("data/ToyotaCorolla.xls", "data")
+```
+
+### Creating a multiple regression model using `lm()`
+
+```{r}
+model <- lm(Price ~ Age_08_04 + Mfg_Year + KM + 
+              Weight + Guarantee_Period, data = car_resale)
+model
+```
+
+### Performing diagnostic tests
+
+#### Checking for multicolinearity
+
+```{r}
+check_collinearity(model)
+```
+
+```{r}
+check_c <- check_collinearity(model)
+
+plot(check_c)
+```
+
+Any VIF over 10, means that there are variables that are highly collinear.
+
+#### Checking normaliy assumption
+
+```{r}
+
+```
+
+```{r}
+
+```
