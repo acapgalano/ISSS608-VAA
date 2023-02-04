@@ -18,7 +18,7 @@ This document serves as my In-class Exercise 4 requirement, following the fourth
 ### Installing packages into the R environment
 
 ```{r}
-pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, ggstatsplot, readxl, performance, parameters, see, tidyverse)
+pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, ggstatsplot, readxl, performance, parameters, see, ggdist, tidyverse)
 ```
 
 ### Loading the data into the R environment
@@ -60,9 +60,9 @@ ggplotly(p)
 Use **`ggplot`** if you want to have control over the design, and use **`plotly`** for easier and better interactivity. You can still control the design if you use native **`ggplot`** objects.
 :::
 
-## 📈 Performing Visual Statistical Analysis Using `ggstatsplot`
+## 📈 Performing Visual Statistical Analysis 
 
-### Using `ggbetweenstats()` 
+### Using `ggstatsplot::ggbetweenstats()` 
 
 ```{r}
 ggbetweenstats(
@@ -76,7 +76,7 @@ ggbetweenstats(
 
 As shown above we can observe the sample means represented by the red dot and labelled accordingly. We can also observe that Welch test was also performed with a p-value of 0.53. List of statistical tests can be found [here](https://indrajeetpatil.github.io/statsExpressions/ "{statsExpressions}: Tidy dataframes and expressions with statistical details").
 
-### Using `ggscatterstats()` 
+### Using `ggstatsplot::gscatterstats()` 
 
 ```{r}
 ggscatterstats(
@@ -86,8 +86,6 @@ ggscatterstats(
   marginal = FALSE,
 )
 ```
-
-## 📊 Exploring Some `easystats` packages
 
 ### Loading an Excel file into the R environment
 
@@ -132,3 +130,46 @@ plot(check_n)
 ```{r}
 check_model(model)
 ```
+
+## ❓ Visualizing Uncertainty
+
+### Visualizing the uncertainty of point estimates
+
+```{r}
+my_sum <- exam_data %>% 
+  group_by(RACE) %>%
+  summarise(
+    n = n(),
+    mean = mean(MATHS),
+    sd = sd(MATHS)
+    ) %>%
+  mutate(se = sd/sqrt(n-1))
+```
+
+#### Using `ggplot`
+
+```{r}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x = RACE, 
+        ymin = mean-se, 
+        ymax = mean+se), 
+    width = 0.2, 
+    colour = "black", 
+    alpha = 0.9, 
+    size = 0.5) +
+  geom_point(aes
+           (x = RACE, 
+            y = mean), 
+           stat = "identity", 
+           color = "red",
+           size = 1.5,
+           alpha = 1) +
+  ggtitle("Standard error of MEAN MATHS score by RACE")
+```
+
+::: {.callout-note icon="false"}
+## 🔍 OBSERVATION
+
+There was no need to mention *exam_data* in the code block above because all the data is already in *my_sum*.
+:::
