@@ -1,0 +1,41 @@
+---
+title: "In-class Exercise 4"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 4 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## 🔍 Overview
+
+This document serves as my In-class Exercise 4 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 4, 2023.
+
+## Getting Started 
+
+### Installing packages into the R environment
+
+```{r}
+pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, tidyverse)
+```
+
+### Loading the data into the R environment
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+## Exploring the `plotly` Package
+
+### Creating our first basic plot
+
+```{r}
+plot_ly(
+  data = exam_data,
+  x = ~ENGLISH,
+  y = ~MATHS,
+  color = ~RACE
+)
+```
