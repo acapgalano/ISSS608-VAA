@@ -51,7 +51,7 @@ a:hover{
   color: var(--secondary);
 }
 
-.active{
+.active :not .tab-pane{
     border-left: 1px solid var(--primary);
     color: var(--primary) !important;
 }
@@ -178,4 +178,8 @@ th, td {
 
 figcaption{
   align-content: center;
+}
+
+.navlink{
+  color: var(--primary) !important;
 }
