@@ -1,5 +1,5 @@
 ---
-title: "In-class Exercise 4"
+title: "In-class Exercise 4: Interactivity and Statistical Analysis"
 author: "Anica Clarice Antonella P. Galano (acapgalano)"
 date: 4 February 2023
 date-modified: "`r Sys.Date()`"
@@ -13,12 +13,12 @@ editor: visual
 
 This document serves as my In-class Exercise 4 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 4, 2023.
 
-## Getting Started 
+## 🌱 Getting Started 
 
 ### Installing packages into the R environment
 
 ```{r}
-pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, tidyverse)
+pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, tidyverse, ggstatsplot)
 ```
 
 ### Loading the data into the R environment
@@ -27,7 +27,7 @@ pacman::p_load(ggiraph, plotly, DT, patchwork, crosstalk, tidyverse)
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-## Exploring the `plotly` Package
+## 🚀 Exploring the **`plotly`** Package
 
 ### Creating our first basic plot
 
@@ -39,3 +39,37 @@ plot_ly(
   color = ~RACE
 )
 ```
+
+We can observe that by default we are given a tooltip containing the pair of 'ENGLISH' and 'MATHS' scores. More into interactivity, several functions are provided by the new plot at the top right corner.
+
+### Creating an alternative `ggplot` plot with `plotly`
+
+```{r}
+p <- ggplot(data = exam_data,
+            aes( x = MATHS,
+                 y = ENGLISH)) + 
+  geom_point(dotsize = 1) + 
+  coord_cartesian(xlim = c(0,100),
+                  ylim = c(0,100))
+ggplotly(p)
+```
+
+::: {.callout-note icon="false"}
+## 🎓 MORAL OF THE STORY
+
+Use **`ggplot`** if you want to have control over the design, and use **`plotly`** for easier and better interactivity. You can still control the design if you use native **`ggplot`** objects.
+:::
+
+## Performing Visual Statistical Analysis Using `ggstatsplot`
+
+```{r}
+ggbetweenstats(
+  data = exam_data,
+  x = GENDER,
+  y = MATHS,
+  type = "p",
+  messages = FALSE
+)
+```
+
+As shown above we can observe the sample means represented by the red dot and labelled accordingly. We can also observe that Welch test was also performed with a p-value of 0.53. List of statistical tests can be found [here](https://indrajeetpatil.github.io/statsExpressions/ "{statsExpressions}: Tidy dataframes and expressions with statistical details").
