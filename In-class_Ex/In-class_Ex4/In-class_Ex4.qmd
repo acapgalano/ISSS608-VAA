@@ -122,9 +122,13 @@ Any VIF over 10, means that there are variables that are highly collinear.
 #### Checking normaliy assumption
 
 ```{r}
+check_n <- check_normality(model)
 
+plot(check_n)
 ```
 
-```{r}
+#### Checking EVERYTHING in one go
 
+```{r}
+check_model(model)
 ```

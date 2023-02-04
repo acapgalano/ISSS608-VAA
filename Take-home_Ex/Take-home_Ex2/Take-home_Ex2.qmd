@@ -535,7 +535,7 @@ With this we have our final product. Simpler is better?
 
 8.  In relation to the point above, I also considered including t[he age dependency ratio and/or child dependency ratio](https://www.singstat.gov.sg/-/media/files/standards_and_classifications/nsa.ashx) at the side of each pyramid.
 
-9.  Lastly, given our recent lesson on interactivity, we can also apply tooltips to the bars for easy comprehension. A simple example is given below produced by `ggiraph`. The tooltip presents the sex, age group, percentage and population. (*Figure adjustments using special Quarto syntax seem to not affect this figure so work needs to be done to adjust the plot.*)
+9.  Lastly, given our recent lesson on interactivity, we can also apply tooltips to the bars for easy comprehension. This would eliminate the "clutter" of having percentage labels per bar. A simple example is given below produced by `ggiraph`. The tooltip presents the sex, age group, percentage and population. (*Figure adjustments using special Quarto syntax seem to not affect this figure so work needs to be done to adjust the plot.*)
 
 ```{r}
 #| fig-width: 12
@@ -613,4 +613,8 @@ girafe(
 )
 ```
 
+::: {.callout-note icon="false"}
+## 🌸 ENDING REMARKS
+
 At the end of the day, a lot is possible with R. I hope to further explore these possibilities with future exercises.
+:::
