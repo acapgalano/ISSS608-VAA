@@ -1,0 +1,330 @@
+---
+title: "In-class Exercise 5: Multivariate Methods"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 11 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## 🔍 Overview
+
+This document serves as my In-class Exercise 5 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 11, 2023.
+
+## 🌱 Getting Started
+
+### Loading the required packages into the R environment
+
+```{r}
+pacman::p_load(seriation, dendextend, heatmaply, ggtern, plotly, corrplot, ggstatsplot, tidyverse)
+```
+
+### Loading the data into the R environment
+
+For the first part of our in-class exercise exploring ways to build correlation matrices, we use the following *wine_quality.csv* dataset.
+
+```{r}
+wine <- read_csv("data/wine_quality.csv")
+```
+
+For the second part of this in-class exercise on ternary diagrams, we used a modified Singapore population dataset called *respopagsex2000to2018_tidy.csv*.
+
+```{r}
+pop_data <- read_csv("data/respopagsex2000to2018_tidy.csv")
+```
+
+For the third part of this exercise about heatmaps, we use the World Happiness index data from 2018 under the filename *WHData-2018.csv*.
+
+```{r}
+
+wh <- read_csv("data/WHData-2018.csv")
+```
+
+### Preparing the data
+
+#### Preparing the population data
+
+To create three new columns 'YOUNG', 'ACTIVE' and 'OLD' (technically 4 to include 'TOTAL') and drop the unnecessary columns, we use the code chunk below.
+
+```{r}
+agpop_mutated <- pop_data %>%
+  mutate(`Year` = as.character(Year))%>%
+  spread(AG, Population) %>%
+  mutate(YOUNG = rowSums(.[4:8]))%>%
+  mutate(ACTIVE = rowSums(.[9:16]))  %>%
+  mutate(OLD = rowSums(.[17:21])) %>%
+  mutate(TOTAL = rowSums(.[22:24])) %>%
+  filter(Year == 2018)%>%
+  filter(TOTAL > 0) %>%
+  select(PA, SZ, YOUNG, ACTIVE, OLD, TOTAL)
+```
+
+::: {.callout-note icon="false"}
+## 🗯️ HOLD IT!
+
+The function `spread()` is an old function that shouldn't be used anymore. The function `pivot_wider()` should be used instead.
+:::
+
+#### Preparing the world happiness data
+
+The code chunk below sets the country names as the row ID. This is important for the matrix that will be made later.
+
+```{r}
+row.names(wh) <- wh$Country
+
+```
+
+## 🔨 Building Correlation Matrix
+
+### Building a basic correlation matrix using `pairs()`
+
+```{r}
+#| fig-align: center
+pairs(wine[,1:11])
+```
+
+To include the correlation coefficients, we use the code chunk below.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 9
+panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...) {
+usr <- par("usr")
+on.exit(par(usr))
+par(usr = c(0, 1, 0, 1))
+r <- abs(cor(x, y, use="complete.obs"))
+txt <- format(c(r, 0.123456789), digits=digits)[1]
+txt <- paste(prefix, txt, sep="")
+if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+text(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)
+}
+
+pairs(wine[,2:12], 
+      upper.panel = panel.cor)
+```
+
+### Building a correlation matrix using `ggcormat()`
+
+```{r}
+#| eval: false
+#| fig-width: 12
+#| fig-height: 10
+ggstatsplot::ggcorrmat(data = wine, 
+                       cor.vars = 1:11)
+```
+
+![](images/image-152768584.png){fig-align="center"}
+
+::: {.callout-note icon="false"}
+## 🌸 PERSONAL COMMENT!
+
+Due to a conflict with the **`ggtern`**, I set 'eval' to false to render the page.
+:::
+
+### Building multiple plots using `grouped_ggcorrmat()`
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+grouped_ggcorrmat(
+  data = wine,
+  cor.vars = 1:11,
+  grouping.var = type,
+  type = "robust",
+  p.adjust.method = "holm",
+  plotgrid.args = list(ncol = 2),
+  ggcorrplot.args = list(outline.color = "black", 
+                         hc.order = TRUE,
+                         tl.cex = 10),
+  annotation.args = list(
+    tag_levels = "a",
+    title = "Correlogram for wine dataset",
+    subtitle = "The measures are: alcohol, sulphates, fixed acidity, citric acid, chlorides, residual sugar, density, free sulfur dioxide and volatile acidity",
+    caption = "Dataset: UCI Machine Learning Repository"
+  )
+)
+```
+
+### Building a correlation matrix using `corrplot()`
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+wine.cor <- cor(wine[, 1:11])
+
+corrplot(wine.cor)
+```
+
+#### Creating a mixed plot (numerical and geometric)
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+corrplot.mixed(wine.cor, 
+               lower = "ellipse", 
+               upper = "number",
+               tl.pos = "lt",
+               diag = "l",
+               tl.col = "black")
+```
+
+#### Combining with significance test
+
+```{r}
+#| fig-align: center
+wine.sig = cor.mtest(wine.cor, conf.level= .95)
+
+corrplot(wine.cor,
+         method = "number",
+         type = "lower",
+         diag = FALSE,
+         tl.col = "black",
+         tl.srt = 45,
+         p.mat = wine.sig$p,
+         sig.level = .05)
+```
+
+#### Reordering the corrgram
+
+```{r}
+#| fig-align: center
+corrplot.mixed(wine.cor, 
+               lower = "ellipse", 
+               upper = "number",
+               tl.pos = "lt",
+               diag = "l",
+               order="AOE",
+               tl.col = "black")
+```
+
+```{r}
+#| fig-align: center
+corrplot(wine.cor, 
+         method = "ellipse", 
+         tl.pos = "lt",
+         tl.col = "black",
+         order="hclust",
+         hclust.method = "ward.D",
+         addrect = 3)
+```
+
+## 🖧 Ternary Diagrams
+
+### Building a static ternary diagram
+
+```{r}
+#| fig-align: center
+ggtern(data = agpop_mutated,
+       aes(x = YOUNG,
+           y = ACTIVE, 
+           z = OLD)) +
+  geom_point()
+```
+
+To improve on the visualization, we add `theme_rgbw()` which colorizes the variables.
+
+```{r}
+#| fig-align: center
+ggtern(data = agpop_mutated, 
+       aes(x = YOUNG,y = ACTIVE, z = OLD)) +
+  geom_point() +
+  labs(title = "Population structure, 2015") +
+  theme_rgbw()
+```
+
+### Building an interactive ternary diagram using `plot_ly`
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+label <- function(txt) {
+  list(
+    text = txt, 
+    x = 0.1, y = 1,
+    ax = 0, ay = 0,
+    xref = "paper", yref = "paper", 
+    align = "center",
+    font = list(family = "serif", 
+                size = 15, 
+                color = "white"),
+    bgcolor = "#b3b3b3", 
+    bordercolor = "black", 
+    borderwidth = 2
+  )
+}
+
+axis <- function(txt) {
+  list(
+    title = txt, 
+    tickformat = ".0%", 
+    tickfont = list(size = 10)
+  )
+}
+
+ternaryAxes <- list(
+  aaxis = list(title = "Young", 
+               color = "red"), 
+  baxis = list(title = "Active", 
+               color = "blue"), 
+  caxis = list(title = "Old", 
+               color  = "green")
+)
+
+plot_ly(
+  agpop_mutated, 
+  a = ~YOUNG, 
+  b = ~ACTIVE, 
+  c = ~OLD, 
+  color = I("black"), 
+  type = "scatterternary"
+) %>%
+  layout(
+    annotations = label("Ternary Markers"), 
+    ternary = ternaryAxes
+  )
+```
+
+## 🔥 Heatmaps
+
+### Transforming **the data frame into a matrix**
+
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+```
+
+### Building a static heatmap
+
+```{r}
+#| fig-width: 12
+#| fig-height: 13
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv = NA, Colv = NA)
+```
+
+### Building an interactive heatmap using `heatmaply`
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          Colv = NA,
+          seriate = "none",
+          colors = Blues,
+          k_row = 5,
+          margins = c(NA,200,60,NA),
+          fontsize_row = 4,
+          fontsize_col = 5,
+          main="World Happiness Score and Variables by Country, 2018 \nDataTransformation using Normalise Method",
+          xlab = "World Happiness Indicators",
+          ylab = "World Countries"
+          )
+```
