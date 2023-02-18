@@ -1,0 +1,76 @@
+---
+title: "In-class Exercise 6"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 18 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## 🔎 Overview
+
+This document serves as my In-class Exercise 5 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 18, 2023.
+
+Being able to look at the patterns in data over time is an important aspect of analytics, however, time-series data is often not very visually friendly. For this week's exercise, we explore ways of graphing time, visualization of time-series patterns, and adding interactive techniques.
+
+## 🖼️ Tableau
+
+### Basic Time Series
+
+![](images/image-1585930962.png){fig-align="center"}
+
+### Cyclical Plot
+
+![](images/image-97163794.png){fig-align="center"}
+
+### Completing the Arrivals Dashboard
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1676701066575' style='position: relative'><noscript><a href='#'><img alt='Arrivals ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6-YearlyArrivalsfromCountries&#47;Arrivals&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-class_Ex6-YearlyArrivalsfromCountries&#47;Arrivals' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6-YearlyArrivalsfromCountries&#47;Arrivals&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1676701066575');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+::: {.callout-note icon="false"}
+## 💡 TABLEAU HACKS!
+
+To sync the filters for both worksheets/plots, select *"Apply to Worksheets" \> "Ally Using This Data Source"* under the filter options.
+
+![](images/image-711765217.png){fig-align="center" width="312"}
+:::
+
+### Calendar Heatmap
+
+![](images/image-1934490808.png){fig-align="center"}
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1676703719774' style='position: relative'><noscript><a href='#'><img alt='Calendar Heatmap ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6_2-CalendarHeatmap&#47;CalendarHeatmap&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-class_Ex6_2-CalendarHeatmap&#47;CalendarHeatmap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6_2-CalendarHeatmap&#47;CalendarHeatmap&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1676703719774');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### Slopegraph
+
+![](images/image-207671978.png){fig-align="center" width="600"}
+
+::: {.callout-note icon="false"}
+## 💡 TABLEAU HACKS!
+
+We need the 'Year' columns to only contain two particular years, 1961 and 1980. First, we convert to 'Year' to discrete and drag it to **Filters**. After, choose to filter to only 1961 and 1980. Then we can click ***Ctrl + drag*** the 'Year' from **Filters** to **Columns**. Ta-da!
+:::
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1676703669805' style='position: relative'><noscript><a href='#'><img alt='Rice Yield of Different Countries from 1961 to 1980  ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6_3-Slopegraph&#47;Slopegraph&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-class_Ex6_3-Slopegraph&#47;Slopegraph' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-class_Ex6_3-Slopegraph&#47;Slopegraph&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1676703669805');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### Animated Bubble Plot
+
+![](images/image-1856211635.png){fig-align="center"}
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1676703014003' style='position: relative'><noscript><a href='#'><img alt='Population Structure in Different Countries - 1996 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;PK&#47;PK9K9SHZS&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;PK9K9SHZS' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;PK&#47;PK9K9SHZS&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1676703014003');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### 🧮 R
+
+::: {.callout-note icon="false"}
+## ✅ TIPS FOR TAKE-HOME EXERICSE 4
+
+-   To create slope graphs, you may need `newggslopegraph` under **`CGPfunctions`** package.
+
+-    A relatively new package called **`ggbraid`** can fill the area between lines which will be helpful for deficit graphs.
+:::

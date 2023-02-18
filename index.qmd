@@ -1,5 +1,5 @@
 ---
-title: "It's a Visual World ✿"
+title: "Cause It's a Visual World, and I Am a Visual Girl ✿"
 listing:
   type: grid
   max-items: 3
@@ -12,12 +12,14 @@ listing:
 toc: false
 ---
 
-![](images/image-2140100922.png){fig-align="center" width="2311"}
+![](index.png){fig-align="center"}
 
 ### Welcome to my ISSS608 - Visual Analytics and Applications journey!
 
 In this website, you'll find my submissions for the different requirements in ISSS608 - Visual Analytics and Applications.
 
-By the end of the semester, I will feel just like the image above. Just kidding!
+By the end of the semester, I will feel just like the image below. Just kidding!
+
+![](images/image-2140100922.png){fig-align="center" width="2311"}
 
 ### Check out the most recent submissions...

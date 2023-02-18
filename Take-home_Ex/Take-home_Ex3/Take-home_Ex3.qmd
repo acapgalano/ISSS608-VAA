@@ -1,0 +1,205 @@
+---
+title: "Take-home Exercise 3: Putting Visual Analytics into Practical Use"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 15 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+---
+
+## 🔍 Overview
+
+This document serves as a submission for Take-home Exercise 3 as required by the course ISSS608 Visual Analytics and Applications.
+
+In this exercise, we aim to bring to apply the analytical visualization techniques discussed in [**Lesson 4: Fundamentals of Visual Analytics**](https://isss608-ay2022-23jan.netlify.app/outline/lesson04_outline "ISSS608 - Lesson 4: Fundamentals of Visual Analytics")and practiced in [**In-class Exercise 4**](https://acapvisualano.netlify.app/in-class_ex/in-class_ex4/in-class_ex4 "acapvisualano: In-class Exercise 4 - Interactivity and Statistical Analysis").
+
+### About the Data
+
+In order to achieve the assignment's objective, we will be taking a look at the resale prices of public housing property by residential towns and estates in Singapore.
+
+The dataset used was *Resale flat princes based on registration date from Jan-2017 onwards* which is available at [data.gov.sg](https://data.gov.sg/dataset/resale-flat-prices "data.gov.sg - Resale Flat Prices") as shown in the screenshot below.
+
+![](images/data.PNG){fig-align="center"}
+
+## 🌱 Getting Started
+
+### Installing and loading required packages
+
+The code chunk below installs and loads the packages to be used.
+
+```{r}
+pacman::p_load(plotly, crosstalk, DT, ggdist, gganimate, ggstatsplot, FunnelPlotR, knitr, tidyverse)
+```
+
+### Loading in the resale flat prices CSV data
+
+```{r}
+resale <- read_csv("data/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+```
+
+```{r}
+glimpse(resale)
+```
+
+## 🗂️ Data Wrangling
+
+Let's recall the limitations of this assignment.
+
+> For the purpose of this study, the focus should be on **3-ROOM, 4-ROOM and 5-ROOM types**. You can choose to focus on either one housing type or multiple housing types. The study period should be on **2022**.
+
+### Limiting the study period to 2022
+
+Let's take a look at the range of values for month. Using `unique()` we see that we have data from 2017 until the second month of 2023.
+
+```{r}
+unique(resale$month)
+```
+
+Given that our month values are string, the function `grepl()` is used to look for matches of a pattern and returns true if found. By filtering the 'month' values that contain "2022", we can extract all 2022 data. The second part of the code chunk below creates a Date type object then takes the numerical month value using `format()`.
+
+```{r}
+resale_fil <- resale %>% 
+              filter(grepl('2022', month)) %>%
+              mutate(month = as.numeric(format(as.Date(paste0(month, "-01")), "%m")))
+```
+
+### Limiting the study to particular 'flat_type's
+
+If we take a look at all the possible 'flat_type's, we'll find that there are 7 possible values.
+
+```{r}
+unique(resale_fil$flat_type)
+```
+
+By using `%in%` we can filter our tibble into the records with 'flat_type' equal to "3 ROOM", "4 ROOM", or "5 ROOM".
+
+```{r}
+resale_fil <- resale_fil %>% 
+              filter(flat_type %in% c("3 ROOM", "4 ROOM", "5 ROOM"))
+```
+
+Checking over our tibble again, we can see that only the desired 'flat_type' values remain.
+
+```{r}
+unique(resale_fil$flat_type)
+```
+
+### Checking for NA values
+
+Now that we've filtered our data, we should check for any null or NA values. The code chunk below reveals that we don't have to worry about any null or NA values.
+
+```{r}
+colSums(is.na(resale_fil))
+```
+
+### Converting 'remaining_lease' to a numerical value
+
+This is the most complex of the data wrangling steps. If we take a look at the 'remaining_lease' values, we find that they are string values containing a number of years and months.
+
+```{r}
+n_distinct(resale_fil$remaining_lease)
+```
+
+```{r}
+resale_fil[c('remaining_lease_year', 
+         'remaining_lease_month')] <- str_split_fixed(resale_fil$remaining_lease,
+                  ' years', 
+                  2)
+resale_fil <- resale_fil %>% 
+  mutate(remaining_lease_year = as.numeric(remaining_lease_year)) %>%
+  mutate(remaining_lease_month = parse_number(remaining_lease_month)) %>%
+  mutate(remaining_lease_month = replace_na(remaining_lease_month, 0)) %>%
+  mutate(remaining_lease = remaining_lease_year + (remaining_lease_month/12))
+```
+
+## 🚀 Exploratory Data Analysis
+
+### Looking at the distribution of resale prices per flat type
+
+```{r}
+#| fig-width: 12
+ggplot(data = resale_fil, 
+       aes(x = resale_price)) +
+  geom_histogram(bins = 20,            
+                 color="black",      
+                 fill="#e3879e") + 
+  facet_wrap(~ flat_type, nrow = 3)
+```
+
+```{r}
+#| fig-width: 12
+ggplot(data = resale_fil, 
+       aes(x = resale_price,
+           fill = flat_type)) +
+  geom_histogram(bins = 20,            
+                 color="black") + 
+  scale_fill_manual(values = c("#e3879e","#af7cb6","#9DCAEB"))
+```
+
+```{r}
+#| fig-align: center
+#| fig-height: 8
+ggplot(data = resale_fil, 
+       aes(y = resale_price, x= flat_type)) +
+  geom_boxplot(fill = "#F3DDE3") +
+  stat_summary(geom = "point",       
+               fun.y = "mean",         
+               colour = "#cb6a82",        
+               size=3)
+```
+
+```{r}
+g <- ggbetweenstats(
+  data = resale_fil,
+  x = flat_type, 
+  y = resale_price)
+
+g
+```
+
+### Taking a look at the resale price per town
+
+```{r}
+#| fig-align: center
+#| fig-height: 12
+#| fig-width: 10
+ggplot(data = resale_fil, 
+       aes(y = resale_price)) +
+  geom_boxplot() + 
+  facet_wrap(~ town, 
+             nrow = 4, 
+             strip.position = "top")
+```
+
+### Exploring
+
+```{r}
+plot_ly(
+  data = resale_fil,
+  x = ~floor_area_sqm,
+  y = ~resale_price,
+  color = ~flat_type,
+  colors = c("#e3879e","#af7cb6","#9DCAEB"),
+  border = list(color = "#000000")
+)
+```
+
+### fgfgf
+
+```{r}
+plot_ly(
+  data = resale_fil,
+  x = ~remaining_lease,
+  y = ~resale_price,
+  color = ~flat_type,
+  colors = c("#e3879e","#af7cb6","#9DCAEB"),
+  text = ~paste("Remaining Lease:", 
+                remaining_lease_year,
+                " years and",
+                remaining_lease_month,
+                "months <br> Resale Flat Price: $",
+                resale_price)
+)
+```
+
+## 👋 Reactions and Conclusions
