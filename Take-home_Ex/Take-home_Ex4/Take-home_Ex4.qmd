@@ -1,0 +1,34 @@
+---
+title: "Take-home Exercise 4"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 25 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## Overview
+
+This document serves as a submission for Take-home Exercise 3 as required by the course ISSS608 Visual Analytics and Applications.
+
+In this exercise, we aim to apply the Lesson 6
+
+### Objectives of this Exercise
+
+### Getting to Know the Data
+
+![](images/data.png){fig-align="center"}
+
+![](images/image-991705069.png)
+
+![](images/image-1724809373.png)
+
+## Getting Started
+
+## Data Wrangling
+
+## Exploratory Data Analysis 
+
+## 

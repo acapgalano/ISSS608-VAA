@@ -1,0 +1,254 @@
+---
+title: "In-class Exercise 7: Geographic Visualization"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 25 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## 🔎Overview
+
+This document serves as my In-class Exercise 5 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on February 25, 2023.
+
+Geospatial data visualization is important since it allows people to easily digest location related information and quickly create insights.
+
+## 🖼️ Tableau
+
+### SGPools (WGS84)
+
+#### Point Symbol Map
+
+1.  Assign 'Xcoord' and 'Ycoord' the *"Geographic Role"* longitude and latitude respectively. Put 'Xcoord' in as the column, and put 'Ycoord' in as the row. A map should appear like as shown below.
+
+    ![](images/image-2052423758.png){width="1882"}
+
+2.  Next we drag 'Name' to *"Detail"* to view the points.
+
+    ![](images/image-1717044980.png)
+
+3.  There's a column that dictates whether the location is a branch or outlet using the values 1 and 0. We create a new calculated field named 'Channel' using the logic shown below.
+
+    ![](images/image-1187877044.png)
+
+    By setting 'Channel as the color indicator, we now have colored points dictating "Branch" or "Outlet".
+
+    ![](images/image-2063909558.png)
+
+#### Proportional Symbol Map
+
+1.  First we duplicate the previously made sheet.
+
+2.  The only difference is we dictate the "Size" of the points using 'Gp1Gp2win'.
+
+    ![](images/image-1771758325.png)
+
+We can also combine both sheets' concepts into one visualization. The result can be found in Tableau Public as [In-class Exercise 7: SG Pools (Proportional Point Symbol Map)](https://public.tableau.com/app/profile/anica.galano/viz/In-classExercise7SGPoolsProportionalPointSymbolMap/ProportionalPointSymbolMap?publish=yes).
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1677303336171' style='position: relative'><noscript><a href='#'><img alt='Proportional Point Symbol Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-classExercise7SGPoolsProportionalPointSymbolMap&#47;ProportionalPointSymbolMap&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-classExercise7SGPoolsProportionalPointSymbolMap&#47;ProportionalPointSymbolMap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-classExercise7SGPoolsProportionalPointSymbolMap&#47;ProportionalPointSymbolMap&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1677303336171');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### Residential Transactions
+
+1.  Open one of the Residential Transaction CSVs. This will allow Tableau to also open the folder and add the other files in the explorer. You can then drag the 6 CSVs into the data workspace.
+
+    ![](images/image-744519202.png)
+
+2.  Tableau is useful because it recognizes the Postal Code right away.
+
+    ![](images/image-1020085462.png){width="430"}
+
+    By setting the 'Postal Code' as "Detail", we produce the map and points below.
+
+    ![](images/image-772208764.png)
+
+    ::: {.callout-note icon="false"}
+    ## 🌸 PERSONAL COMMENTS!
+
+    I encountered an issue where my points were not showing. It also stated I had 6,000+ unknown values. My seatmate also encountered the same issue. However, everyone else did not seem to have the same problem. The common denominator between the two of us with issues was that we are from the Philippines. By pressing the unknown prompt, I saw that our location was set to Philippines therefore the system was unable to identify the postal codes. By setting location to Singapore, we were able to produce the points and fix the issue.
+    :::
+
+3.  Next we set 'Unit Price (psf)' as the "Color", particularly using the MEDIAN measure. 'Number of Units' should be set at the "Size". 'Project Name' is set as another "Detail". Lastly, we set 'Property Type' as a "Filter". All of this is shown below.
+
+    ![](images/image-1205126912.png)
+
+The result can be found in Tableau Public as [In-class Exercise 7 - Residential Transactions (Postal Codes)](https://public.tableau.com/app/profile/anica.galano/viz/In-classExercise7-ResidentialTransactionsPostalCodes/ProportionalPointSymbolMap?publish=yes).
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1677308065727' style='position: relative'><noscript><a href='#'><img alt='Proportional Point Symbol Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Z2&#47;Z2GNBPNN3&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;Z2GNBPNN3' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Z2&#47;Z2GNBPNN3&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1677308065727');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+### Master Plan 2019 Subzone Boundaries
+
+1.  Load in the geojson file Dragging the 'Geometry' field automatically generates the map.
+
+    ![](images/image-322524026.png)
+
+2.  The issue however is that the details in the geojson are in JSON format. Sure there's a way to split it but that will take time. So instead, we make use of the SHP file which has the different subzone names and other details. We can then link the population data to this geospatial data.
+
+    ![](images/image-1773581252.png)
+
+    To anticipate the difference in cases for the two subzone columns, we set the relationship calculation to set SZ to uppercase as shown below.
+
+    ![](images/image-1216400753.png)
+
+    We get the map shown below.
+
+    ![](images/image-405670297.png)
+
+3.  We drag 'Population' to "Color and 'SZ' to "Detail" to get the simple cholorpleth map below. ![](images/image-201415514.png)
+
+    We can also make the color scale stepped as shown below.
+
+    ![](images/image-2048835452.png)The result can be found in Tableau Public as [In-class Exercise 7 - MP14SZPop Chloropleth Map](https://public.tableau.com/app/profile/anica.galano/viz/In-classExercise7-MP14SZPopChloroplethMap/ChloroplethMap?publish=yes).
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1677307472706' style='position: relative'><noscript><a href='#'><img alt='Chloropleth Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-classExercise7-MP14SZPopChloroplethMap&#47;ChloroplethMap&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='In-classExercise7-MP14SZPopChloroplethMap&#47;ChloroplethMap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;In-classExercise7-MP14SZPopChloroplethMap&#47;ChloroplethMap&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1677307472706');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+## 🧮 R
+
+### Geospatial Point Data
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse)
+```
+
+```{r}
+sgpools <- read_csv("data/SGPools_svy21.csv")
+```
+
+```{r}
+sgpools_sf <- st_as_sf(sgpools, 
+                       coords = c("XCOORD", "YCOORD"),
+                       crs = 3414)
+```
+
+::: {.callout-note icon="false"}
+## 🖊️ THINGS TO NOTE!
+
+-   Always start with x-coordinates, followed by y-coordinates!
+
+-   Country projections are given a code. For SVY21 (Singapore), the coordinate reference system (CRS) we use will be EPSG 3414.
+
+-   Running `st_as_sf()` will combine the x-coordinates and y-coordinates as a GEOMETRY object (which is a list).
+:::
+
+```{r}
+tmap_mode("view")
+tm_shape(sgpools_sf)+
+tm_bubbles(col = "#cb6a82",
+           size = 1,
+           border.col = "black",
+           border.lwd = 1)
+```
+
+```{r}
+tm_shape(sgpools_sf)+
+tm_bubbles(col = "OUTLET TYPE", 
+          size = "Gp1Gp2 Winnings",
+          palette = c("#e3879e","#af7cb6"),
+          border.col = "black",
+          border.lwd = 1)
+```
+
+```{r}
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "OUTLET TYPE", 
+          size = "Gp1Gp2 Winnings",
+          palette = c("#e3879e","#af7cb6"),
+          border.col = "black",
+          border.lwd = 1) +
+  tm_facets(by= "OUTLET TYPE",
+            nrow = 1,
+            sync = TRUE)
+```
+
+### Chloropleth Map 
+
+```{r}
+mpsz <- st_read(dsn = "data/geospatial", 
+                layer = "MP14_SUBZONE_WEB_PL")
+```
+
+```{r}
+popdata <- read_csv("data/respopagesextod2011to2020.csv")
+```
+
+```{r}
+popdata2020 <- popdata %>%
+  filter(Time == 2020) %>%
+  group_by(PA, SZ, AG) %>%
+  summarise(`POP` = sum(`Pop`)) %>%
+  ungroup()%>%
+  pivot_wider(names_from = AG, 
+              values_from = POP) %>%
+  mutate(YOUNG = rowSums(.[3:6])
+         +rowSums(.[12])) %>%
+mutate(`ECONOMY ACTIVE` = rowSums(.[7:11])+
+rowSums(.[13:15]))%>%
+mutate(`AGED`= rowSums(.[16:21])) %>%
+mutate(`TOTAL`= rowSums(.[3:21])) %>%  
+mutate(`DEPENDENCY` = (`YOUNG` + `AGED`)
+/`ECONOMY ACTIVE`) %>%
+  select(`PA`, `SZ`, `YOUNG`, 
+       `ECONOMY ACTIVE`, `AGED`, 
+       `TOTAL`, `DEPENDENCY`)
+```
+
+```{r}
+popdata2020 <- popdata2020 %>%
+  mutate_at(.vars = vars(PA, SZ), 
+          .funs = funs(toupper)) %>%
+  filter(`ECONOMY ACTIVE` > 0)
+```
+
+```{r}
+mpsz_pop2020 <- left_join(mpsz, popdata2020,
+                          by = c("SUBZONE_N" = "SZ"))
+```
+
+```{r}
+write_rds(mpsz_pop2020, "data/mpszpop2020.rds")
+```
+
+::: {.callout-note icon="false"}
+## 🖊️ THINGS TO NOTE
+
+-   The left-hand side should always be the geospatial data!
+:::
+
+```{r}
+#| fig-width: 12
+#| fig-align: center
+tmap_mode("plot")
+qtm(mpsz_pop2020, 
+    fill.palette = "PiYG",
+    fill = "DEPENDENCY")
+```
+
+```{r}
+#| fig-width: 12
+#| fig-align: center
+tm_shape(mpsz_pop2020)+
+  tm_fill("DEPENDENCY", 
+          style = "quantile", 
+          palette = "RdPu",
+          title = "Dependency ratio") +
+  tm_layout(main.title = "Distribution of Dependency Ratio by planning subzone",
+            main.title.position = "center",
+            main.title.size = 1.2,
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar() +
+  tm_grid(alpha =0.2) +
+  tm_credits("Source: Planning Sub-zone boundary from Urban Redevelopment Authorithy (URA)\n and Population data from Department of Statistics DOS", 
+             position = c("left", "bottom"))
+```
+
+### Analytical Mapping 
+
+yes
