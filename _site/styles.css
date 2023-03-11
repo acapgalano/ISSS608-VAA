@@ -164,16 +164,27 @@ p {
 }
 
 tr:nth-child(even) {
-  background-color: #e3879e;
+  background-color: var(--contrast2);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--contrast3);
 }
 
 tr.header{
-  background-color: #e3879e;
+  background-color: var(--contrast);
+  color: var(--contrast3);
 }
 
 th, td {
   font-size: 0.8em;
   vertical-align: middle;
+  text-align: center !important;
+}
+
+.cell-output-display{
+  margin-right: 1.5em;
+  margin-left: 1.5em;
 }
 
 figcaption{

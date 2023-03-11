@@ -1,7 +1,7 @@
 ---
 title: "Take-home Exercise 4"
 author: "Anica Clarice Antonella P. Galano (acapgalano)"
-date: 25 February 2023
+date: 26 February 2023
 date-modified: "`r Sys.Date()`"
 execute:
   warning: false
@@ -9,26 +9,280 @@ format: html
 editor: visual
 ---
 
-## Overview
+## 🔎 Overview
 
 This document serves as a submission for Take-home Exercise 3 as required by the course ISSS608 Visual Analytics and Applications.
 
-In this exercise, we aim to apply the Lesson 6
-
 ### Objectives of this Exercise
+
+In this exercise, we aim to apply [Lesson 6: It's About Time](https://isss608-ay2022-23jan.netlify.app/outline/lesson06_outline "ISSS608 - Lesson 6: It's About Time")
 
 ### Getting to Know the Data
 
+For this exercise, we used the "***Merchandise Trade by Region/Market"*** dataset available from the [Department of Statistics, Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data "DoS | Merchandise Trade") as shown in the screenshot below.
+
 ![](images/data.png){fig-align="center"}
+
+The data contains two sheets, each providing imports and exports monthly. The values (in dollars) are collated in total, by continent or region, and by country.
 
 ![](images/image-991705069.png)
 
-![](images/image-1724809373.png)
+## 🌱 Getting Started
 
-## Getting Started
+### Loading required R packages into the R environment
 
-## Data Wrangling
+As usual, our first step is to load all the necessary packages. The code chunk below uses `p_load()` to install and load these packages.
 
-## Exploratory Data Analysis 
+```{r}
+pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, ggHoriPlot, plotly, ggbraid, ggrepel, gganimate, transformr, patchwork, gifski, tidyverse)
+```
+
+### Loading the data into the R environment
+
+Since the study period is from January 2020 to December 2022, we
+
+```{r}
+imports <- read_excel("data/merchant_trade.xlsx", 
+                      sheet = "T1",
+                      range = "A10:AL129")
+
+exports <- read_excel("data/merchant_trade.xlsx",
+                      sheet = "T2",
+                      range = "A10:AL101")
+```
+
+## 🗂️ Data Wrangling
+
+### Splitting the data with minor edits
+
+```{r}
+imports_region <- imports %>% 
+                  slice(2:7) %>% 
+                  rename("Region" = "Data Series") %>%
+                  mutate(Region = str_remove(Region, 
+                                             " \\(Million Dollars\\)"))
+
+exports_region <- exports %>% 
+                  slice(2:7) %>% 
+                  rename("Region" = "Data Series") %>%
+                  mutate(Region = str_remove(Region, 
+                                             " \\(Million Dollars\\)"))
+
+imports_country <- imports %>% 
+                   slice(1,8:n()) %>%
+                   rename("Country" = "Data Series") %>%
+                  mutate(Country = str_remove(Country, 
+                                             " \\(Thousand Dollars\\)")) %>%
+                  mutate(Country = str_replace(Country,
+                                               "Total Merchandise Imports",
+                                               "Total"))
+
+exports_country <- exports %>% 
+                   slice(1,8:n()) %>%
+                   rename("Country" = "Data Series") %>%
+                  mutate(Country = str_remove(Country, 
+                                             " \\(Thousand Dollars\\)")) %>%
+                  mutate(Country = str_replace(Country,
+                                               "Total Merchandise Exports",
+                                               "Total"))
+
+glimpse(imports_region)
+```
+
+### Pivoting the table
+
+```{r}
+imports_region <- imports_region %>% 
+                  pivot_longer(cols = !"Region",
+                               names_to = "Month",
+                               values_to = "Amount")
+
+exports_region <- exports_region %>% 
+                  pivot_longer(cols = !"Region",
+                               names_to = "Month",
+                               values_to = "Amount")
+
+imports_country <- imports_country %>% 
+                  pivot_longer(cols = !"Country",
+                               names_to = "Month",
+                               values_to = "Amount")
+
+exports_country <- exports_country %>% 
+                  pivot_longer(cols = !"Country",
+                               names_to = "Month",
+                               values_to = "Amount")
+
+kable(head(imports_region))
+```
+
+### Converting to date
+
+%b refers to the abbreviation of the month
+
+```{r}
+imports_region <- imports_region %>% 
+        mutate(Month = as.Date(paste0(Month, " 01"), 
+                               format = "%Y %b %d")) %>%
+        subset(Month < "2023-01-01")
+exports_region <- exports_region %>% 
+        mutate(Month = as.Date(paste0(Month, " 01"), 
+                               format = "%Y %b %d")) %>%
+        subset(Month < "2023-01-01")
+imports_country <- imports_country %>% 
+        mutate(Month = as.Date(paste0(Month, " 01"), 
+                               format = "%Y %b %d")) %>%
+        subset(Month < "2023-01-01")
+exports_country <- exports_country %>% 
+        mutate(Month = as.Date(paste0(Month, " 01"), 
+                               format = "%Y %b %d")) %>%
+        subset(Month < "2023-01-01")
+
+kable(head(imports_region))
+```
+
+### Merging the data
+
+```{r}
+trade_region <- merge(imports_region, 
+              exports_region, 
+              by = c("Region", "Month")) %>% 
+              rename("Imports" = "Amount.x",
+                     "Exports" = "Amount.y")
+
+trade_country <- merge(imports_country, 
+              exports_country, 
+              by = c("Country", "Month")) %>% 
+              rename("Imports" = "Amount.x",
+                     "Exports" = "Amount.y")
+
+kable(head(trade_region))
+```
+
+```{r}
+colSums(is.na(trade_country))
+colSums(is.na(trade_region))
+```
+
+### Calculating for the balance of trade
+
+```{r}
+trade_region <- trade_region %>% 
+                mutate(Balance = Exports-Imports)
+
+trade_country <-trade_country %>%
+                mutate(Balance = Exports-Imports)
+
+kable(head(trade_region))
+```
+
+## 📈 Exploratory Data Analysis
+
+### Looking at the total
+
+```{r}
+#| fig-width: 12
+#| fig-align: center
+
+line_total <- trade_country %>% 
+              subset(Country == "Total") %>%
+              ggplot(aes(x = Month)) + 
+              geom_line(aes( y = Imports/1000),
+                        color = "#cb6a82",
+                        linewidth = 1) +
+              geom_line(aes( y = Imports/1000,
+                         text = paste("Month: ", 
+                                      format(Month,
+                                             "%B %Y"),
+                                      "\nImports: $",
+                                      format(Imports,
+                                             big.mark = ","))),
+                        color = "#e3879e") +
+              geom_line(aes( y = Exports/1000),
+                        color = "#704276",
+                        linewidth = 1) +
+              geom_line(aes( y = Exports/1000,
+                         text = paste("Month: ", 
+                                      format(Month,
+                                             "%B %Y"),
+                                      "\nExports: $",
+                                      format(Exports,
+                                             big.mark = ","))),
+                        color = "#704276")  +
+              labs (x = "Date",
+                    y = "Trade Value ($ Millions)",
+                    title = "Total Singapore Import-Export Trade in Millions, 2020-2022") + 
+              scale_y_continuous(labels = scales::comma)
+
+
+ggplotly(line_total, tooltip = "text") 
+              
+```
+
+```{r}
+bubble_region <- trade_region %>%
+                 ggplot(aes(x = Imports, 
+                            y = Exports, 
+                            size = Balance, 
+                            color = Region)) + 
+                  geom_point(show.legend = TRUE, 
+                             alpha = 0.7) +
+                  scale_size(range = c(2, 12)) +
+                  transition_time(Month) +
+                  labs(title = "Region: {format(frame_time,
+                                                '%B %Y')}", 
+                        x = "Imports", 
+                        y = "Exports", 
+                        fill = "Region") +
+                  theme(legend.position = "bottom") + 
+                  theme_bw()
+
+animate(bubble_region, 
+        duration = 24)
+```
+
+```{r}
+asia <- c("Cambodia", "Hong Kong", "India", "Indonesia", 
+          "Japan", "Laos People's Democratic Republic", 
+          "Macau", "Mainland China", "Malaysia", "Myanmar",
+          "Nepal","Philippines",  "Republic Of Korea",
+          "Taiwan", "Thailand", "Vietnam, Socialist Republic Of" )
+```
+
+```{r}
+
+line_total <- trade_country %>% 
+              subset(Country %in% asia) %>%
+              ggplot(aes(x = Month)) + 
+              geom_line(aes( y = Imports),
+                        color = "#cb6a82",
+                        linewidth = 1) +
+              geom_line(aes( y = Exports),
+                        color = "#704276",
+                        linewidth = 1) +
+              geom_braid(aes(ymin = Imports, 
+                             ymax = Exports,
+                             fill = Imports <
+                                    Exports),
+                          alpha = 0.5,
+                         show.legend = FALSE) +
+              labs (x = "Date",
+                    y = "Trade Value ($ Thousands)",
+                    color = "Legend",
+                    title = "Total Singapore Import-Export Trade in Thousands, 2020-2022") + 
+              scale_y_continuous(labels = scales::comma) +
+              scale_fill_manual(values = c("#cb6a82", 
+                                           "#704276")) +
+              facet_wrap(~ Country)
+
+line_total
+```
 
 ## 
+
+```{r}
+asia <- c("Cambodia", "Hong Kong", "India", "Indonesia", 
+          "Japan", "Laos People's Democratic Republic", 
+          "Macau", "Mainland China", "Malaysia", "Myanmar",
+          "Nepal","Philippines",  "Republic Of Korea",
+          "Taiwan", "Thailand", "Vietnam, Socialist Republic Of" )
+```

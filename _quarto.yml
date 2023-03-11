@@ -28,6 +28,8 @@ website:
           href: In-class_Ex/In-class_Ex6/In-class_Ex6.qmd
         - text: "In-class Exercise 7: Geographic Visualization"
           href: In-class_Ex/In-class_Ex7/In-class_Ex7.qmd
+        - text: "In-class Exercise 8: Network Data Visualization"
+          href: In-class_Ex/In-class_Ex8/In-class_Ex8.qmd
     - text: "Take-home Exercises"
       menu:
         - text: "Take-home Exercise 1: Age-Sex Pyramid"

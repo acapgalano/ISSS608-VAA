@@ -1,0 +1,312 @@
+---
+title: "In-class Exercise 8 - Modelling, Visualizing and Analysing Network Data with R"
+author: "Anica Clarice Antonella P. Galano (acapgalano)"
+date: 25 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  warning: false
+format: html
+editor: visual
+---
+
+## 🔍 Overview
+
+This document serves as my In-class Exercise 8 requirement, following the fourth week of ISSS608 VAA lecture of Professor Kam on March 11, 2023.
+
+### The Data
+
+The data sets used in this hands-on exercise is from an oil exploration and extraction company. There are two data sets. One contains the nodes data and the other contains the edges (also know as link) data.
+
+#### **The edges data -** *GAStech-email_edges.csv* 
+
+This consists of two weeks of 9063 emails correspondances between 55 employees.
+
+![](images/image-495572129.png){fig-align="center"}
+
+#### The nodes data -  *GAStech_email_nodes.csv* 
+
+This consists of the names, department and title of the 55 employees.
+
+![](images/image-1901589752.png){fig-align="center"}
+
+## 🌱 Getting Started
+
+### Loading required packages into the R environment
+
+```{r}
+pacman::p_load(igraph, tidygraph, ggraph, visNetwork, lubridate, clock, tidyverse)
+```
+
+::: {.callout-note icon="false"}
+## 📰 EXTRA EXTRA!
+
+Not used in the this exercise but [`graphlayouts`](https://cran.r-project.org/web/packages/graphlayouts/index.html) is another package with new layout algorithms to visualize networks which are not provided in `iraph`!
+:::
+
+### Loading the data into the R environment 
+
+```{r}
+GAStech_nodes <- read_csv("data/GAStech_email_node.csv")
+GAStech_edges <- read_csv("data/GAStech_email_edge-v2.csv")
+```
+
+```{r}
+glimpse(GAStech_nodes)
+```
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+## 📁 Data Wrangling 
+
+### Converting 'SentDate' to date datatype and weekday 
+
+```{r}
+GAStech_edges <- GAStech_edges %>%
+        mutate(SendDate = dmy(SentDate)) %>%
+        mutate(Weekday = wday(SentDate,
+                              label = TRUE,
+                              abbr = FALSE))
+```
+
+### Aggregating to get connectivity attributes
+
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+              filter(MainSubject == "Work related") %>%
+              group_by(source, target, Weekday) %>%
+              summarise(Weight = n()) %>%
+              filter(source != target) %>%
+              filter(Weight > 1) %>%
+              ungroup()
+```
+
+## 🖧 Network Objects: Tidygraph
+
+### **Using `tbl_graph()` to build tidygraph data model**
+
+```{r}
+GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
+                           edges = GAStech_edges_aggregated, 
+                           directed = TRUE)
+
+GAStech_graph
+```
+
+### **Changing the active object**
+
+There are always two tables, one for nodes data and one for edges data. The previous tbl_graph data shows that node data is active. We can toggle or rather, explicitly activate using the edges table.
+
+```{r}
+GAStech_graph %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
+```
+
+::: {.callout-note icon="false"}
+## 💭 TO REMEMBER!
+
+Remember to arrange or else the table will not know how to sort.
+:::
+
+## 📍 Plotting Network Data
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+ggraph(GAStech_graph) +
+  geom_edge_link(color = '#e3879e') +
+  geom_node_point(color = '#cb6a82')
+```
+
+### Customizing the network object plot 
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+g <- ggraph(GAStech_graph) + 
+  geom_edge_link(aes(color = 'grey50')) +
+  geom_node_point(aes(color = 'grey40'))
+
+g + theme_graph(background = 'grey10',
+                text_colour = 'white')
+```
+
+You can also just choose a layout! It's easy to switch from one to another.
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+g <- ggraph(GAStech_graph, 
+            layout = "star") +
+  geom_edge_link(aes(color = '#e3879e')) +
+  geom_node_point(aes(color = '#cb6a82'))
+
+g + theme_graph()
+```
+
+### Modifying network nodes 
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes()) +
+  geom_node_point(aes(color = Department, 
+                      size = 3))
+
+g + theme_graph()
+```
+
+### Modifying network edges
+
+```{r}
+#| fig-align: center
+#| fig-width: 10
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") +
+  geom_edge_link(aes(width = Weight), 
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department), 
+                  size = 3)
+
+g + theme_graph()
+```
+
+### Using facets
+
+#### `facet_edges()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width = Weight), 
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+
+g + facet_edges(~Weekday)
+```
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+set_graph_style() 
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width = Weight), 
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_edges(~Weekday) +
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+#### `facet_nodes()`
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width = Weight), 
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_nodes(~Department)+
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+::: {.callout-note icon="false"}
+## 🔍 LET'S SEE!
+
+Removing `set_graph_style()` makes your graphs ugly. Basically, node sizes will be weird, elements will go over their bounds and other layout issues will occur. So don't remove it!
+:::
+
+## 🖇️Network Metric Analysis
+
+### **Computing centrality indices**
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+g <- GAStech_graph %>%
+  mutate(betweenness_centrality = centrality_betweenness()) %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width = Weight), 
+                 alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(color = Department,
+            size = betweenness_centrality))
+g + theme_graph()
+```
+
+## 🧩 Interactive Network Graph: visNetwork
+
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  left_join(GAStech_nodes, by = c("sourceLabel" = "label")) %>%
+  rename(from = id) %>%
+  left_join(GAStech_nodes, by = c("targetLabel" = "label")) %>%
+  rename(to = id) %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(from, to) %>%
+    summarise(weight = n()) %>%
+  filter(from != to) %>%
+  filter(weight > 1) %>%
+  ungroup()
+```
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+visNetwork(GAStech_nodes, 
+           GAStech_edges_aggregated)
+```
+
+Very wiggly wiggly.
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+          visIgraphLayout(layout = "layout_with_fr") 
+          # use full layout name!
+```
+
+### Working with visual attributes
+
+```{r}
+GAStech_nodes <- GAStech_nodes %>%
+  rename(group = Department) 
+```
+
+```{r}
+#| fig-align: center
+#| fig-width: 12
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
